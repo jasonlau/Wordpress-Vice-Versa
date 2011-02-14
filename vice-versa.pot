@@ -39,7 +39,7 @@ msgid "Close"
 msgstr ""
 
 #: vice-versa.php:61
-#: vice-versa.php:95
+#: vice-versa.php:96
 #, php-format
 msgid "Debug Mode"
 msgstr ""
@@ -69,9 +69,22 @@ msgstr ""
 msgid "Select pages and categories to convert to posts."
 msgstr ""
 
-#: vice-versa.php:127
+#: vice-versa.php:134
+#: vice-versa.php:210
 #, php-format
-msgid "Pages"
+msgid "Page"
+msgstr ""
+
+#: vice-versa.php:134
+#: vice-versa.php:210
+#, php-format
+msgid "Limit"
+msgstr ""
+
+#: vice-versa.php:134
+#: vice-versa.php:210
+#, php-format
+msgid "Total Items"
 msgstr ""
 
 #: vice-versa.php:139
@@ -90,37 +103,15 @@ msgstr ""
 msgid "Page (Categories)"
 msgstr ""
 
-#: vice-versa.php:140
-#: vice-versa.php:176
+#: vice-versa.php:141
+#: vice-versa.php:177
 #: vice-versa.php:220
 #: vice-versa.php:254
-#: vice-versa.php:505
-#: vice-versa.php:535
 #, php-format
-msgid "View"
+msgid "Date"
 msgstr ""
 
-#: vice-versa.php:140
-#: vice-versa.php:176
-#: vice-versa.php:220
-#: vice-versa.php:254
-#: vice-versa.php:505
-#: vice-versa.php:535
-#, php-format
-msgid "Increase height"
-msgstr ""
-
-#: vice-versa.php:140
-#: vice-versa.php:176
-#: vice-versa.php:220
-#: vice-versa.php:254
-#: vice-versa.php:505
-#: vice-versa.php:535
-#, php-format
-msgid "Decrease height"
-msgstr ""
-
-#: vice-versa.php:162
+#: vice-versa.php:160
 #, php-format
 msgid "Toggle Categories"
 msgstr ""
@@ -193,24 +184,42 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: vice-versa.php:323
+#: vice-versa.php:322
 #, php-format
 msgid "Version"
 msgstr ""
 
-#: vice-versa.php:503
-#: vice-versa.php:533
+#: vice-versa.php:786
+#: vice-versa.php:804
 #, php-format
 msgid "Category"
 msgstr ""
 
-#: vice-versa.php:504
-#: vice-versa.php:534
+#: vice-versa.php:769
+#: vice-versa.php:805
 #, php-format
 msgid "Count"
 msgstr ""
 
-#: vice-versa.php:554
+#: vice-versa.php:771
+#: vice-versa.php:808
+#, php-format
+msgid "View"
+msgstr ""
+
+#: vice-versa.php:771
+#: vice-versa.php:808
+#, php-format
+msgid "Increase height"
+msgstr ""
+
+#: vice-versa.php:771
+#: vice-versa.php:808
+#, php-format
+msgid "Decrease height"
+msgstr ""
+
+#: vice-versa.php:828
 #, php-format
 msgid "Select A Page"
 msgstr ""

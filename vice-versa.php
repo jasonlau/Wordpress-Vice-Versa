@@ -1,19 +1,18 @@
 <?php
-
 /*
 
 Plugin Name: Vice Versa
 Plugin URI: http://jasonlau.biz
 Description: Convert Pages to Posts and Vice Versa
-Version: 2.1.0
+Version: 2.1.1
 Author: Jason Lau
 Author URI: http://jasonlau.biz
 Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
-Copyright 2010 http://jasonlau.biz
+Copyright 2010-2011 http://jasonlau.biz
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -27,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-define('VICEVERSA_VERSION', '2.1.0');
+define('VICEVERSA_VERSION', '2.1.1');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa',
@@ -37,12 +36,13 @@ add_action('admin_menu', 'viceversa_admin_menu');
 
 function viceversa_admin_menu()
 {
-    add_management_page('Vice Versa', 'Vice Versa', 10, __file__, 'viceversa_content');
+  add_submenu_page('tools.php', 'Vice Versa', 'Vice Versa', 'publish_pages', 'vice-versa', 'viceversa_content');
 }
 
 function viceversa_content()
 {
     global $wpdb;
+    
     $viceversa_mode = isset($_POST['viceversa_post']) ? 'post' : 'page';
     $viceversa_order = ($_POST['viceversa_order'] == '') ? 'post_title ASC' : $_POST['viceversa_order'];
     $cat_order = (eregi('desc', $viceversa_order)) ? 'desc' : 'asc';
@@ -116,7 +116,7 @@ function viceversa_content()
         $output .= "</p></div>\n";
     endif;
     $output .= "<div id=\"viceversa-pageform-container\" class=\"metabox-holder\">
-    <div class=\"meta-box-sortables\">
+    <div>
     <div class=\"postbox \">
     <h3><span>" . __('Page To Post', 'vice-versa') . "</span></h3>
     <div class=\"inside\">
@@ -124,69 +124,69 @@ function viceversa_content()
     <p>" . __('Select pages and categories to convert to posts.', 'vice-versa') . "</p>\n";
     
     // START PAGE TABLE
-    $output .= "<strong>" . __('Pages', 'vice-versa') . ":</strong>";
+    
     $viceversa_sql = "SELECT ID FROM " . $wpdb->posts .
         " WHERE post_type = 'page' ORDER BY " . $viceversa_order;
     $viceversa_pages = $wpdb->get_col($viceversa_sql);
     $num_pages = count($viceversa_pages);
     $overflow = ($num_pages > 20) ? ' style="height:200px;overflow-x:hidden;overflow-y:auto;"' : ' style="overflow-x:hidden;overflow-y:auto;"';
     $x = 1;
+    $output .= '<strong>' . __('Page', 'vice-versa') . ':</strong> <input type="button" value="&lt;&lt;" id="pagenum-pages-down" /><input type="text" value="1" id="pagenum-pages" size="5" /><input type="button" value="&gt;&gt;" id="pagenum-pages-up" /> <strong>' . __('Limit', 'vice-versa') . ':</strong> <input type="button" value="&nbsp;-&nbsp;" id="limit-pages-down" /><input type="text" value="10" id="limit-pages" size="5" /><input type="button" value="&nbsp;+&nbsp;" id="limit-pages-up" />  <strong>' . __('Total Items', 'vice-versa') . ':</strong> <span id="numpages-number">' . $num_pages . '</span>';
     $page_options = '<div id="page-options">
     <table id="page-options-table" class="widefat" style="margin-top:1px">
-    <thead>
-	<tr>
+    <thead><tr>
 	<th scope="col" id="cb-pages" class="manage-column column-cb check-column"><input class="viceversa-checktable" type="checkbox" rel="page-options"></th>
     <th scope="col" id="idn" class="manage-column column-idn">' . __('ID', 'vice-versa') . '</th>
-	<th scope="col" id="name" class="manage-column column-name" style="width:90%">' . __('Page (Categories)', 'vice-versa') . '</th>       <th scope="col" id="view" class="manage-column column-view" style="text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-pages-bigger" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-pages-smaller" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>
+	<th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Page (Categories)', 'vice-versa') . '</th>
+    <th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Date', 'vice-versa') . '</th>
 	</tr>
 	</thead>
-    </table>
-    <div id="the-pages-list"' . $overflow . '>
-    <table id="the-pages-list-table" class="widefat" style="margin-top:1px">
-    <tbody class="list:tag">
+    <tbody class="list:pages pages-list">
     '; 
     foreach ($viceversa_pages as $viceversa_id) {
         $post = get_post(intval($viceversa_id));
-        $altclass = ($x % 2) ? ' class="alternate"' : '';
-        $page_options .= '<tr id="tag-' . $x . '"' . $altclass . '>';
-        $page_options .= '<th scope="row" class="check-column" style="padding:3px"><input name="viceversa_page[]" type="checkbox" value="' . $post->ID . '|vice-versa|';
+        $altclass = ($x % 2) ? ' class="alternate hidden page-item item-' . $x . '"' : ' class="hidden page-item item-' . $x . '"';
+        $page_options_c .= '<tr id="pages-' . $x . '"' . $altclass . '>';
+        $page_options_c .= '<td scope="row" class="check-column" style="padding:3px"><input name="viceversa_page[]" type="checkbox" value="' . $post->ID . '|vice-versa|';
         $post_title = (strlen($post->post_title) > 50) ? substr($post->post_title, 0, 50) .
             '...' : $post->post_title;
-        $page_options .= $post_title;
-        $page_options .= '" /></th>
-        <td class="page-id column-page-id" valign="middle" style="padding:3px">';
-        $page_options .= $post->ID;
-        $page_options .= '</td>
-        <td class="name column-name" valign="middle" style="padding:3px;width:95%" nowrap="nowrap">';
-        $page_options .= $post_title;
-        $page_options .= " (<a href=\"javascript:void(0)\" class=\"viceversa-subcat-opener\" rel=\"viceversa-subcat-" . $post->ID . "\" title=\"" . __('Toggle Categories', 'vice-versa') . "\">+</a>)<div class=\"viceversa-subcat viceversa-subcat-" . $post->ID . "\"  style=\"display:none\">" . viceversa_categories($post->ID, $cat_order) . "</div>";
-        $page_options .= '</td>        
+        $page_options_c .= $post_title;
+        $page_options_c .= '" /></td>
+        <td class="page-id column-page-id sortable" valign="middle" style="padding:3px">';
+        $page_options_c .= $post->ID;
+        $page_options_c .= '</td>
+        <td class="name column-name sortable" valign="middle" style="padding:3px;width:50%" nowrap="nowrap">';
+        $page_options_c .= $post_title;
+        $page_options_c .= " (<a href=\"javascript:void(0)\" class=\"viceversa-subcat-opener\" rel=\"viceversa-subcat-" . $post->ID . "\" title=\"" . __('Toggle Categories', 'vice-versa') . "\">+</a>)<div class=\"viceversa-subcat viceversa-subcat-" . $post->ID . "\"  style=\"display:none\">" . viceversa_categories($post->ID, $cat_order) . "</div>";
+        
+        $page_options_c .= '</td>
+        <td class="sortable" nowrap="nowrap">' . $post->post_date . '</td>       
         </tr>
         ';
         $x++;
     }
+    
+    $page_options .= $page_options_c;
+    
     $page_options .= '</tbody>
-    </table>
-    </div>
-    <table class="widefat" style="margin-top:1px">
     <tfoot>
 	<tr>
 	<th scope="col" id="cb-pages" class="manage-column column-cb check-column"><input class="viceversa-checktable" type="checkbox" rel="page-options"></th>
     <th scope="col" id="idn" class="manage-column column-idn">' . __('ID', 'vice-versa') . '</th>
-	<th scope="col" id="name" class="manage-column column-name" style="width:90%">' . __('Page (Categories)', 'vice-versa') . '</th>       <th scope="col" id="view" class="manage-column column-view" style="text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-pages-bigger" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-pages-smaller" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>
+	<th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Page (Categories)', 'vice-versa') . '</th>
+    <th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Date', 'vice-versa') . '</th>
 	</tr>
 	</tfoot>
     </table></div>
     ';
     $output .= $page_options;
-    $wpdb->flush();
     // END PAGE TABLE
     $output .= "<br /><strong>" . __('Bulk Category Select', 'vice-versa') . ":</strong><br /> ";
-    $output .= viceversa_categories('', $cat_order);
-    
+    $output .= viceversa_categories('', $cat_order);   
     $output .= "<br />\n";
     $output .= "<input class=\"button-secondary action\" type=\"submit\" name=\"viceversa_pageform_button\" value=\"" .
         __('Submit', 'vice-versa') . "\">\n";
+        
     $output .= "</form>
     </div>
     </div>
@@ -200,14 +200,14 @@ function viceversa_content()
     <div class=\"inside\">
     <form id=\"viceversa-postform\" method=\"POST\" action=\"#\">
     <p>" . __('Select posts and a parents(optional) to convert to pages.', 'vice-versa') . "</p>\n";
-    
-    
+        
     // START POST TABLE
-    $output .= "<strong>" . __('Posts', 'vice-versa') . ":</strong>";
+    
     $viceversa_sql2 = "SELECT ID FROM " . $wpdb->posts .
         " WHERE post_type = 'post'  ORDER BY " . $viceversa_order;
     $viceversa_posts = $wpdb->get_col($viceversa_sql2);
     $num_posts = count($viceversa_posts);
+    $output .= '<strong>' . __('Page', 'vice-versa') . ':</strong> <input type="button" value="&lt;&lt;" id="pagenum-posts-down" /><input type="text" value="1" id="pagenum-posts" size="5" /><input type="button" value="&gt;&gt;" id="pagenum-posts-up" /> <strong>' . __('Limit', 'vice-versa') . ':</strong> <input type="button" value="&nbsp;-&nbsp;" id="limit-posts-down" /><input type="text" value="10" id="limit-posts" size="5" /><input type="button" value="&nbsp;+&nbsp;" id="limit-posts-up" />  <strong>' . __('Total Items', 'vice-versa') . ':</strong> <span id="numposts-number">' . $num_posts . '</span>';
     $overflow = ($num_posts > 20) ? ' style="height:200px;overflow-x:hidden;overflow-y:auto;"' : ' style="overflow-x:hidden;overflow-y:auto;"';
     $x = 1;
     $post_options = '<div id="post-options">
@@ -216,49 +216,49 @@ function viceversa_content()
 	<tr>
 	<th scope="col" id="cb-posts" class="manage-column column-cb check-column"><input type="checkbox" class="viceversa-checktable" rel="post-options"></th>
     <th scope="col" class="manage-column column-name">' . __('ID', 'vice-versa') . '</th>
-	<th scope="col" id="name" class="manage-column column-name" style="width:90%">' . __('Post (Parents)', 'vice-versa') . '</th>
-    <th scope="col" id="view" class="manage-column column-view" style="text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-posts-bigger" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-pages-smaller" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>
-	</tr>
+	<th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Post (Parents)', 'vice-versa') . '</th>
+    <th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Date', 'vice-versa') . '</th>
+    </tr>
 	</thead>
-    </table>   
-    <div id="the-posts-list"' . $overflow . '>
-    <table id="the-posts-list-table" class="widefat" style="margin-top:1px;">
-    '; 
+    <tbody>
+    ';
+     
     foreach ($viceversa_posts as $viceversa_id) {
         $post = get_post(intval($viceversa_id));
-        $altclass = ($x % 2) ? ' class="alternate"' : '';
-        $post_options .= '<tr id="tag-' . $x . '"' . $altclass . '>';
-        $post_options .= '<th scope="row" class="check-column" style="padding:3px"><input name="viceversa_post[]" type="checkbox" value="' . $post->ID . '|vice-versa|';
+        $altclass = ($x % 2) ? ' class="alternate hidden post-item item-' . $x . '"' : ' class="hidden post-item item-' . $x . '"';
+        $post_options .= '<tr id="post-' . $x . '"' . $altclass . '>';
+        $post_options .= '<td scope="row" class="check-column" style="padding:3px"><input name="viceversa_post[]" type="checkbox" value="' . $post->ID . '|vice-versa|';
         $post_title = (strlen($post->post_title) > 50) ? substr($post->post_title, 0, 50) .
             '...' : $post->post_title;
         $post_options .= $post_title;
-        $post_options .= '" /></th>
-        <td class="page-id column-page-id" valign="middle" style="padding:3px">';
+        $post_options .= '" /></td>
+        <td class="page-id column-page-id sortable" valign="middle" style="padding:3px">';
         $post_options .= $post->ID;
         $post_options .= '</td>
-        <td class="name column-name" valign="middle" style="padding:3px" width="95%" nowrap="nowrap">';
+        <td class="name column-name sortable" valign="middle" style="padding:3px" width="50%" nowrap="nowrap">';
         $post_options .= $post_title;
+        
         $post_options .= " (<a href=\"javascript:void(0)\" class=\"viceversa-subcat-opener\" rel=\"viceversa-subcat-" . $post->ID . "\"title=\"" . __('Toggle Parents', 'vice-versa') . "\">+</a>)<div class=\"viceversa-subcat viceversa-subcat-" . $post->ID . "\"  style=\"display:none\">" . viceversa_parents($viceversa_pages, $post->ID) . "</div>";
-        $post_options .= '</td>        
+        $post_options .= '</td> 
+        <td nowrap="nowrap" class="sortable">' . $post->post_date . '</td>       
         </tr>
         ';
         $x++;
     }
-    $post_options .= '</table></div>
-    <table class="widefat" style="margin-top:1px;">
+    $post_options .= '</tbody>
     <tfoot>
 	<tr>
 	<th scope="col" id="cb-posts" class="manage-column column-cb check-column"><input type="checkbox" class="viceversa-checktable" rel="post-options"></th>
     <th scope="col" class="manage-column column-name">' . __('ID', 'vice-versa') . '</th>
-	<th scope="col" id="name" class="manage-column column-name" style="width:90%">' . __('Post (Parents)', 'vice-versa') . '</th>
-    <th scope="col" id="view" class="manage-column column-view" style="text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-posts-bigger" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-pages-smaller" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>
+	<th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Post (Parents)', 'vice-versa') . '</th>
+    <th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Date', 'vice-versa') . '</th>
 	</tr>
 	</tfoot>
     </table></div>
     ';
     $output .= $post_options;
-    $wpdb->flush();
     // END POST TABLE
+    
     $output .= "<br /><strong>" . __('Bulk Parent Select', 'vice-versa') . ":</strong> ";
     $output .= viceversa_parents($viceversa_pages, 0);
     
@@ -318,43 +318,40 @@ function viceversa_content()
        </div>
        </div>
        </div>\n";
-    $output .= "<hr /><div id=\"icon-tools\" class=\"icon32\"><br /></div><h2>Vice Versa</h2>" .
-        __('Convert Pages to Posts and Vice Versa', 'vice-versa') .
-        " [" . __('Version', 'vice-versa') . ": " . VICEVERSA_VERSION . "] &copy;2010 <a href=\"http://JasonLau.biz\" target=\"_blank\">JasonLau.biz</a>";
+    $output .= "<hr /><a href=\"http://www.gnu.org/licenses/gpl.html\" target=\"_blank\"><img src=\"http://www.gnu.org/graphics/gplv3-127x51.png\" alt=\"GNU/GPL\" border=\"0\" /></a><em><strong>Share And Share-Alike!</strong></em><br />
+<code><strong>Another <em><strong>Quality</strong></em> Work From  <a href=\"http://JasonLau.biz\" target=\"_blank\">JasonLau.biz</a></strong> - &copy;2011 Jason Lau</code> <code>[" . __('Vice Versa', 'vice-versa') . " " . __('Version', 'vice-versa') . ": " . VICEVERSA_VERSION . "]</code>";
+
+   
     $output .= "<div id=\"viceversa-mode\" style=\"display:none;\">" . $viceversa_mode . "</div></div><br />\n";
        
         
         
 ?>
+<style type="text/css">
+<!--
+	.hidden{
+	   display: none;
+	}
+-->
+</style>
 <script type="text/javascript">
 <!--
 
 jQuery(function(){
+    
     jQuery("#viceversa-status").css('margin-bottom','0px');
     jQuery("#viceversa-pageform-container").css('display','none');
     jQuery("#viceversa-postform-container").css('display','none');
     jQuery("#viceversa-orderform-container").css({ 'display' : 'none', 'margin-top' : '-20px' });
     jQuery(".inside").css('padding','10px');
-    jQuery("#viceversa_view_pageform_button").click(function(){
-        jQuery(this).addClass("button-primary");
-        jQuery("#viceversa_view_postform_button").removeClass("button-primary");
-        jQuery("#viceversa-pageform-container").show('slow');
-        jQuery("#viceversa-orderform-container").show('slow');
-        jQuery("#viceversa-postform-container").hide('slow');
-    });
-    jQuery("#viceversa_view_postform_button").click(function(){
-        jQuery(this).addClass("button-primary");
-        jQuery("#viceversa_view_pageform_button").removeClass("button-primary");
-        jQuery("#viceversa-postform-container").show('slow');
-        jQuery("#viceversa-orderform-container").show('slow');
-        jQuery("#viceversa-pageform-container").hide('slow');           
-    });
+    jQuery("#viceversa-close-status-icon").css('text-decoration','none');
+    
     switch(jQuery("#viceversa-mode").html()){
         case 'post':
         jQuery("#viceversa_view_postform_button").addClass("button-primary");
         jQuery("#viceversa_view_pageform_button").removeClass("button-primary");
         jQuery("#viceversa-postform-container").show('slow');
-        jQuery("#viceversa-orderform-container").show('slow');
+        jQuery("#viceversa-orderform-container").show('slow');         
         jQuery("#viceversa-pageform-container").hide('slow');
         break;
             
@@ -367,6 +364,24 @@ jQuery(function(){
         break;
     }
     
+    jQuery("#viceversa_view_pageform_button").click(function(){
+        jQuery(this).addClass("button-primary");
+        jQuery("#viceversa_view_postform_button").removeClass("button-primary");
+        jQuery("#viceversa-pageform-container").show('slow');
+        jQuery("#viceversa-orderform-container").show('slow');
+        jQuery("#viceversa-postform-container").hide('slow');
+    });
+    
+    jQuery("#viceversa_view_postform_button").click(function(){
+        jQuery(this).addClass("button-primary");
+        jQuery("#viceversa_view_pageform_button").removeClass("button-primary");      
+        jQuery("#viceversa-orderform-container").show('slow');
+        jQuery("#viceversa-pageform-container").hide('slow');
+        jQuery("#viceversa-postform-container").show('slow');
+        show_content('post-item', jQuery("#pagenum-posts").val(), jQuery("#limit-posts").val());
+        disabling('posts');        
+    });
+        
     jQuery(".viceversa-subcat-opener").click(function(){
         var c = jQuery(this).attr('rel');
         if(jQuery("." + c).is(':visible')){
@@ -471,13 +486,263 @@ jQuery(function(){
        jQuery("#viceversa-status").hide('slow');                  
     });
     
-    jQuery("#viceversa-close-status-icon").css('text-decoration','none');                
-  
-});   
+    jQuery("#pagenum-pages").change(function(){
+        var tp = parseInt(jQuery("#numpages-number").html())/parseInt(jQuery("#limit-pages").val());
+         show_content('page-item', jQuery("#limit-pages").val(), jQuery(this).val());
+         if(parseInt(jQuery("#pagenum-pages").val()) >= tp){ 
+            jQuery("#pagenum-pages-up").attr('disabled','disabled');
+        } else {
+            jQuery("#pagenum-pages-up").attr('disabled','');
+        }
+        if(parseInt(jQuery("#pagenum-pages").val()) < 2){ 
+            jQuery("#pagenum-pages-down").attr('disabled','disabled');
+        } else {
+            jQuery("#pagenum-pages-down").attr('disabled','');
+        }      
+    });
+    
+    jQuery("#pagenum-pages-up").click(function(){        
+        paging('pages', 'page', 'up');
+    });
+    
+    jQuery("#pagenum-pages-down").click(function(){
+        paging('pages', 'page', 'down');             
+    });
+    
+    jQuery("#limit-pages-up").click(function(){ 
+        paging('pages', 'limit', 'up');         
+    });
+    
+    jQuery("#limit-pages-down").click(function(){
+        paging('pages', 'limit', 'down');
+    });
+    
+    jQuery("#limit-pages").bind('change', function(){
+        var tp = parseInt(jQuery("#numpages-number").html());
+         show_content('page-item', jQuery("#pagenum-pages").val(), jQuery(this).val());
+         if(parseInt(jQuery("#limit-pages").val()) < 2){
+            jQuery("#limit-pages-down").attr('disabled','disabled');
+        } else {
+            jQuery("#limit-pages-down").attr('disabled','');
+        }
+        if(parseInt(jQuery("#limit-pages").val()) == tp){
+            jQuery("#limit-pages-up").attr('disabled','disabled');
+        } else {
+            jQuery("#limit-pages-up").attr('disabled','');
+        }
+               
+    });
+    
+    jQuery("#pagenum-posts").bind('change', function(){
+        var tp = parseInt(jQuery("#numposts-number").html())/parseInt(jQuery("#limit-posts").val());
+         show_content('post-item', jQuery(this).val(), jQuery("#limit-posts").val());
+         if(parseInt(jQuery("#pagenum-posts").val()) >= tp){ 
+            jQuery("#pagenum-posts-up").attr('disabled','disabled');
+        } else {
+            jQuery("#pagenum-posts-up").attr('disabled','');
+        }
+        if(parseInt(jQuery("#pagenum-posts").val()) < 2){ 
+            jQuery("#pagenum-posts-down").attr('disabled','disabled');
+        } else {
+            jQuery("#pagenum-posts-down").attr('disabled','');
+        }
+               
+    });
+    
+    jQuery("#pagenum-posts-up").click(function(){        
+        paging('posts', 'page', 'up');     
+    });
+    
+    jQuery("#pagenum-posts-down").click(function(){  
+        paging('posts', 'page', 'down');             
+    });
+    
+    jQuery("#limit-posts-up").click(function(){ 
+        paging('posts', 'limit', 'up');            
+    });
+    
+    jQuery("#limit-posts-down").click(function(){
+        paging('posts', 'limit', 'down');
+    });
+    
+    jQuery("#limit-posts").bind('change',function(){
+        var tp = parseInt(jQuery("#numposts-number").html());
+         show_content('post-item', jQuery("#pagenum-posts").val(), jQuery(this).val());
+         if(parseInt(jQuery("#limit-posts").val()) < 2){
+            jQuery("#limit-posts-down").attr('disabled','disabled');
+        } else {
+            jQuery("#limit-posts-down").attr('disabled','');
+        }
+        if(parseInt(jQuery("#limit-posts").val()) == tp){
+            jQuery("#limit-posts-up").attr('disabled','disabled');
+        } else {
+            jQuery("#limit-posts-up").attr('disabled','');
+        }           
+    });
+    
+    jQuery('.manage-column').not('check-column').css('cursor','pointer');
+    jQuery('input:button').css('cursor','pointer');
+     function show_content(class_name, page_number, limit){
+       var p = parseInt(page_number);
+       var l = parseInt(limit); 
+       var pagenum = (!page_number) ? 1 : p;
+       var start = (pagenum*l)-(l-1);
+       var end = start+l;
+       var num = 0;
+       var startnum = start;      
+       jQuery('.' + class_name).hide();
+       for(var i=0; i<l; i++){
+        jQuery('.' + class_name).each(function(){
+           if(jQuery(this).hasClass('item-' + startnum)){
+            jQuery(this).show();
+           } 
+        });       
+        startnum++;
+       }
+    }
+    
+    show_content('page-item', 1, 10);
+    
+    function paging(pages_or_posts, page_or_limit, up_or_down){
+        var page = parseInt(jQuery("#pagenum-" + pages_or_posts).val());
+        var limit = parseInt(jQuery("#limit-" + pages_or_posts).val());
+        var total = parseInt(jQuery("#num" + pages_or_posts + "-number").html());
+        var total_pages = Math.ceil(total/limit);
+        switch(up_or_down){
+            case 'up':
+            if(page_or_limit == 'limit'){
+                var next = (parseInt(jQuery("#limit-" + pages_or_posts).val())+1 > total) ? total : parseInt(jQuery("#limit-" + pages_or_posts).val())+1;
+                jQuery("#limit-" + pages_or_posts).val(next);
+                if(next >= total){
+                   jQuery("#pagenum-" + pages_or_posts).val('1');
+                }                
+            } else {
+               var next = (parseInt(jQuery("#pagenum-" + pages_or_posts).val())+1 > total_pages) ? total_pages : parseInt(jQuery("#pagenum-" + pages_or_posts).val())+1;
+               jQuery("#pagenum-" + pages_or_posts).val(next);
+               if(next >= total){
+                   jQuery("#pagenum-" + pages_or_posts).val(total);
+                } 
+            }           
+            break;
+            
+            default:
+            if(page_or_limit == 'limit'){
+                var next = (parseInt(jQuery("#limit-" + pages_or_posts).val())-1 < 2) ? 1 : parseInt(jQuery("#limit-" + pages_or_posts).val())-1;
+                jQuery("#limit-" + pages_or_posts).val(next);                
+            } else {
+               var next = (parseInt(jQuery("#pagenum-" + pages_or_posts).val())-1 > total) ? total : parseInt(jQuery("#pagenum-" + pages_or_posts).val())-1;
+               jQuery("#pagenum-" + pages_or_posts).val(parseInt(jQuery("#pagenum-" + pages_or_posts).val())-1); 
+            }            
+        }
+        var p = (pages_or_posts == 'pages') ? 'page' : 'post';
+        show_content(p + '-item', jQuery("#pagenum-" + pages_or_posts).val(), jQuery("#limit-" + pages_or_posts).val()); 
+        disabling(pages_or_posts);
+    }
+    
+    function disabling(pages_or_posts){
+        var limit = parseInt(jQuery("#limit-" + pages_or_posts).val());
+        var total = parseInt(jQuery("#num" + pages_or_posts + "-number").html());
+        var total_pages = Math.ceil(total/limit);
+        if(parseInt(jQuery("#limit-" + pages_or_posts).val()) >= parseInt(jQuery("#num" + pages_or_posts + "-number").html())){
+            jQuery("#limit-" + pages_or_posts).val(jQuery("#num" + pages_or_posts + "-number").html());
+            jQuery("#limit-" + pages_or_posts + "-up").attr('disabled','disabled');
+        } else {
+            jQuery("#limit-" + pages_or_posts + "-up").attr('disabled','');
+        }
+        if(parseInt(jQuery("#limit-" + pages_or_posts).val()) < 2){
+            jQuery("#limit-" + pages_or_posts + "-down").attr('disabled','disabled');
+        } else {
+            jQuery("#limit-" + pages_or_posts + "-down").attr('disabled','');
+        }
+        if(parseInt(jQuery("#pagenum-" + pages_or_posts).val()) >= total_pages){
+            jQuery("#pagenum-" + pages_or_posts + "-up").attr('disabled','disabled');
+        } else {
+            jQuery("#pagenum-" + pages_or_posts + "-up").attr('disabled','');
+        }
+        if(parseInt(jQuery("#pagenum-" + pages_or_posts).val()) < 2){
+            jQuery("#pagenum-" + pages_or_posts + "-down").attr('disabled','disabled');
+        } else {
+            jQuery("#pagenum-" + pages_or_posts + "-down").attr('disabled','');
+        } 
+    }
+    disabling('pages');
+});
+   
  -->
 </script>
 <?php
     echo $output;
+?>    
+<script type="text/javascript">
+jQuery.fn.sort = (function(){
+    var sort = [].sort;
+    return function(comparator, getSortable) {
+        getSortable = getSortable || function(){return this;};
+        var placements = this.map(function(){
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+ 
+            return function() {
+ 
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+                
+                parentNode.insertBefore(this, nextSibling);
+                parentNode.removeChild(nextSibling);
+                };
+                });
+ 
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+ 
+    };
+ 
+})();
+
+var th = jQuery('th'),
+                inverse = false;           
+            th.click(function(){
+                do{
+                try{
+                var header = jQuery(this),
+                    index = parseInt(header.index());
+                header
+                    .closest('table')
+                    .find('.sortable')
+                    .filter(function(){
+                        return jQuery(this).index() === parseInt(index);
+                    })
+                    .sort(function(a, b){
+                        
+                        a = jQuery(a).text();
+                        b = jQuery(b).text();
+                        
+                        return (
+                            isNaN(a) || isNaN(b) ?
+                                a > b : +a > +b
+                            ) ?
+                                inverse ? -1 : 1 :
+                                inverse ? 1 : -1;
+                            
+                    }, function(){
+                        return this.parentNode;
+                    });
+                
+                inverse = !inverse;
+                } catch(e){};
+                }while(e);
+            });
+
+</script>  
+<?php    
 }
 
 function viceversa_categories($item_id, $cat_order)
@@ -501,39 +766,48 @@ function viceversa_categories($item_id, $cat_order)
 	<tr>
 	<th scope="col" id="cb" class="manage-column column-cb check-column" style="padding:4px"><input type="checkbox" rel="cats-list-' . $item_id . '" class="viceversa-checktable cat-item term-0 ' . $iclass . '' . $hclass . '"></th>
 	<th scope="col" id="name" class="manage-column column-name" style="padding:4px" nowrap="nowrap">' . __('Category', 'vice-versa') . '</th>
-    <th scope="col" id="count" class="manage-column column-count" style="padding:4px" nowrap="nowrap">' . __('Count', 'vice-versa') . '</th>
-    <th scope="col" id="count" class="manage-column column-count" style="padding:4px; width:90%; text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-cats-bigger" rel="' . $item_id . '" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-cats-smaller" rel="' . $item_id . '" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>
-	</tr>
-	</thead>
-    </table>
+    <th scope="col" id="count" class="manage-column column-count" style="padding:4px" nowrap="nowrap">' . __('Count', 'vice-versa') . '</th>';   
+    if($num_cats > 10){
+      $options .= '<th scope="col" id="count" class="manage-column column-count" style="padding:4px; width:90%; text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-cats-bigger" rel="' . $item_id . '" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-cats-smaller" rel="' . $item_id . '" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>';
+      }
+	$options .= '</tr>
+	</thead>';
+    if($num_cats > 10){
+     $options .= '</table>
     <div id="the-cats-list-' . $item_id . '"' . $overflow . '>
-    <table id="the-cats-list-table-' . $item_id . '" class="widefat" style="margin-top:1px">
-    <tbody class="list:tag">
+    <table id="the-cats-list-table-' . $item_id . '" class="widefat" style="margin-top:1px">';   
+    }
+    $options .= '<tbody class="list:cats">
     ';   
     foreach ($categories as $cat) {
         $altclass = ($x % 2) ? ' class="alternate"' : '';
-        $options .= '<tr id="tag-' . $x . '"' . $altclass . '>';
-        $options .= '<th scope="row" class="check-column" style="padding:3px"><input' . $name . ' type="checkbox" rel="' . $cat->term_id . '" value="' . $cat->term_id . '" class="cat-item term-' . $cat->term_id . ' ' . $iclass . '" /></th>
-        <td class="name column-name" valign="middle" style="padding:3px" nowrap="nowrap">';
+        $options .= '<tr id="cat-' . $x . '"' . $altclass . '>';
+        $options .= '<th scope="row" class="cats check-column" style="padding:3px"><input' . $name . ' type="checkbox" rel="' . $cat->term_id . '" value="' . $cat->term_id . '" class="cat-item term-' . $cat->term_id . ' ' . $iclass . '" /></th>
+        <td class="cats name column-name" valign="middle" style="padding:3px" nowrap="nowrap">';
         $options .= $cat->cat_name;
-        $options .= '</td><td class="count column-count" valign="middle" style="padding:3px">' . $cat->category_count . '';
+        $options .= '</td><td class="cats count column-count" valign="middle" style="padding:3px">' . $cat->category_count . '';
         $options .= '</td>
         <td style="width:90%;"></td>        
         </tr>
         ';
         $x++;
     }
-    $options .= '</tbody>  
-    </table>
+    $options .= '</tbody>'; 
+    if($num_cats > 10){
+      $options .= '</table>
     </div>
-    <table class="widefat" style="margin-top:1px">
-    <tfoot>
+    <table class="widefat" style="margin-top:1px">';  
+    }    
+    $options .= '<tfoot>
 	<tr>
 	<th scope="col" id="cb" class="manage-column column-cb check-column" style="padding:4px"><input type="checkbox" rel="cats-list-' . $item_id . '" class="viceversa-checktable cat-item term-0 ' . $iclass . '' . $hclass . '"></th>
 	<th scope="col" id="name" class="manage-column column-name" style="padding:4px" nowrap="nowrap">' . __('Category', 'vice-versa') . '</th>
-    <th scope="col" id="count" class="manage-column column-count" style="padding:4px" nowrap="nowrap">' . __('Count', 'vice-versa') . '</th>
-    <th scope="col" id="count" class="manage-column column-count" style="padding:4px; width:90%; text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-cats-bigger" rel="' . $item_id . '" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-cats-smaller" rel="' . $item_id . '" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>
-	</tr>
+    <th scope="col" id="count" class="manage-column column-count" style="padding:4px" nowrap="nowrap">' . __('Count', 'vice-versa') . '</th>';
+    
+    if($num_cats > 10){
+      $options .= '<th scope="col" id="count" class="manage-column column-count" style="padding:4px; width:90%; text-align:right;" nowrap="nowrap">' . __('View', 'vice-versa') . ': <a href="javascript:void(0);" class="viceversa-resize-cats-bigger" rel="' . $item_id . '" title="' . __('Increase height', 'vice-versa') . '">+</a>  <a href="javascript:void(0);" class="viceversa-resize-cats-smaller" rel="' . $item_id . '" title="' . __('Decrease height', 'vice-versa') . '">-</a></th>';
+      }
+	$options .= '</tr>
 	</tfoot>
     </table>
     </div>
