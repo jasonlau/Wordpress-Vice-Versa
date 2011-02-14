@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vice Versa 4.20\n"
+"Project-Id-Version: Vice Versa 2.1.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-08 18:34+0800\n"
 "PO-Revision-Date: 2009-06-08 18:34+0800\n"

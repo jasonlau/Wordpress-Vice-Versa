@@ -8,7 +8,7 @@ Version: 2.1.1
 Author: Jason Lau
 Author URI: http://jasonlau.biz
 Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
-Copyright 2010-2011 http://jasonlau.biz
+Copyright 2010-2011 http://JasonLau.biz
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

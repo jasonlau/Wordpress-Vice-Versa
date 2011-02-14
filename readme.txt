@@ -42,6 +42,12 @@ Yes I do. Thank you in advance!
 = 2.0.0 =
 * Total recode. Fixed a bug or two. Changed the appearance to be more in keeping with the Dashboard. Moved it to Tools instead of Settings.
 
+= 2.1.0 =
+* Prayers have been answered. Added the option to convert multiple pages or posts.
+
+= 2.1.1 =
+* Added paging and additional sorting. Verified compatibility with WordPress 3.0.5.
+
 == Upgrade Notice ==
 
 = 1.0 =
