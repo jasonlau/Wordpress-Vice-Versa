@@ -1,14 +1,15 @@
 <?php
+
 /*
 
 Plugin Name: Vice Versa
 Plugin URI: http://jasonlau.biz
 Description: Convert Pages to Posts and Vice Versa
-Version: 2.1.1
+Version: 2.1.3
 Author: Jason Lau
 Author URI: http://jasonlau.biz
 Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
-Copyright 2010-2011 http://JasonLau.biz
+Copyright 2010-2011 http://jasonlau.biz
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
-define('VICEVERSA_VERSION', '2.1.1');
+define('VICEVERSA_VERSION', '2.1.2');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa',
@@ -134,7 +135,8 @@ function viceversa_content()
     $output .= '<strong>' . __('Page', 'vice-versa') . ':</strong> <input type="button" value="&lt;&lt;" id="pagenum-pages-down" /><input type="text" value="1" id="pagenum-pages" size="5" /><input type="button" value="&gt;&gt;" id="pagenum-pages-up" /> <strong>' . __('Limit', 'vice-versa') . ':</strong> <input type="button" value="&nbsp;-&nbsp;" id="limit-pages-down" /><input type="text" value="10" id="limit-pages" size="5" /><input type="button" value="&nbsp;+&nbsp;" id="limit-pages-up" />  <strong>' . __('Total Items', 'vice-versa') . ':</strong> <span id="numpages-number">' . $num_pages . '</span>';
     $page_options = '<div id="page-options">
     <table id="page-options-table" class="widefat" style="margin-top:1px">
-    <thead><tr>
+    <thead>
+	<tr>
 	<th scope="col" id="cb-pages" class="manage-column column-cb check-column"><input class="viceversa-checktable" type="checkbox" rel="page-options"></th>
     <th scope="col" id="idn" class="manage-column column-idn">' . __('ID', 'vice-versa') . '</th>
 	<th scope="col" id="name" class="manage-column column-name" style="width:50%">' . __('Page (Categories)', 'vice-versa') . '</th>
@@ -158,16 +160,13 @@ function viceversa_content()
         <td class="name column-name sortable" valign="middle" style="padding:3px;width:50%" nowrap="nowrap">';
         $page_options_c .= $post_title;
         $page_options_c .= " (<a href=\"javascript:void(0)\" class=\"viceversa-subcat-opener\" rel=\"viceversa-subcat-" . $post->ID . "\" title=\"" . __('Toggle Categories', 'vice-versa') . "\">+</a>)<div class=\"viceversa-subcat viceversa-subcat-" . $post->ID . "\"  style=\"display:none\">" . viceversa_categories($post->ID, $cat_order) . "</div>";
-        
         $page_options_c .= '</td>
         <td class="sortable" nowrap="nowrap">' . $post->post_date . '</td>       
         </tr>
         ';
         $x++;
     }
-    
     $page_options .= $page_options_c;
-    
     $page_options .= '</tbody>
     <tfoot>
 	<tr>
@@ -182,11 +181,11 @@ function viceversa_content()
     $output .= $page_options;
     // END PAGE TABLE
     $output .= "<br /><strong>" . __('Bulk Category Select', 'vice-versa') . ":</strong><br /> ";
-    $output .= viceversa_categories('', $cat_order);   
+    $output .= viceversa_categories('', $cat_order);
+    
     $output .= "<br />\n";
     $output .= "<input class=\"button-secondary action\" type=\"submit\" name=\"viceversa_pageform_button\" value=\"" .
         __('Submit', 'vice-versa') . "\">\n";
-        
     $output .= "</form>
     </div>
     </div>
@@ -200,7 +199,8 @@ function viceversa_content()
     <div class=\"inside\">
     <form id=\"viceversa-postform\" method=\"POST\" action=\"#\">
     <p>" . __('Select posts and a parents(optional) to convert to pages.', 'vice-versa') . "</p>\n";
-        
+    
+    
     // START POST TABLE
     
     $viceversa_sql2 = "SELECT ID FROM " . $wpdb->posts .
@@ -221,8 +221,7 @@ function viceversa_content()
     </tr>
 	</thead>
     <tbody>
-    ';
-     
+    '; 
     foreach ($viceversa_posts as $viceversa_id) {
         $post = get_post(intval($viceversa_id));
         $altclass = ($x % 2) ? ' class="alternate hidden post-item item-' . $x . '"' : ' class="hidden post-item item-' . $x . '"';
@@ -237,7 +236,6 @@ function viceversa_content()
         $post_options .= '</td>
         <td class="name column-name sortable" valign="middle" style="padding:3px" width="50%" nowrap="nowrap">';
         $post_options .= $post_title;
-        
         $post_options .= " (<a href=\"javascript:void(0)\" class=\"viceversa-subcat-opener\" rel=\"viceversa-subcat-" . $post->ID . "\"title=\"" . __('Toggle Parents', 'vice-versa') . "\">+</a>)<div class=\"viceversa-subcat viceversa-subcat-" . $post->ID . "\"  style=\"display:none\">" . viceversa_parents($viceversa_pages, $post->ID) . "</div>";
         $post_options .= '</td> 
         <td nowrap="nowrap" class="sortable">' . $post->post_date . '</td>       
@@ -258,7 +256,6 @@ function viceversa_content()
     ';
     $output .= $post_options;
     // END POST TABLE
-    
     $output .= "<br /><strong>" . __('Bulk Parent Select', 'vice-versa') . ":</strong> ";
     $output .= viceversa_parents($viceversa_pages, 0);
     
@@ -600,8 +597,11 @@ jQuery(function(){
         startnum++;
        }
     }
-    
-    show_content('page-item', 1, 10);
+<?php if($viceversa_mode == "page" || $viceversa_mode == ''): ?> 
+show_content('page-item', 1, 10); 
+<?php else: ?> 
+show_content('post-item', 1, 10); 
+<?php endif; ?>
     
     function paging(pages_or_posts, page_or_limit, up_or_down){
         var page = parseInt(jQuery("#pagenum-" + pages_or_posts).val());
