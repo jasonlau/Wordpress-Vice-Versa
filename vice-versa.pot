@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vice Versa 2.1.1\n"
+"Project-Id-Version: Vice Versa 4.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-08 18:34+0800\n"
-"PO-Revision-Date: 2009-06-08 18:34+0800\n"
+"POT-Creation-Date: 2011-010-03 18:34+0800\n"
+"PO-Revision-Date: 2011-010-03 18:34+0800\n"
 "Last-Translator: Jason Lau http://jasonlau.biz\n"
 "Language-Team: Jason Lau http://jasonlau.biz\n"
 "MIME-Version: 1.0\n"
@@ -16,210 +16,119 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: vice-versa.php:51
-#: vice-versa.php:322
-#, php-format
-msgid "Convert Pages to Posts and Vice Versa."
+msgid "Convert Pages To Posts And Vice Versa"
 msgstr ""
 
-#: vice-versa.php:55
-#, php-format
-msgid "Convert A Page To A Post"
+msgid "post"
 msgstr ""
 
-#: vice-versa.php:56
-#, php-format
-msgid "Convert A Post To A Page"
+msgid "posts"
 msgstr ""
 
-#: vice-versa.php:59
-#: vice-versa.php:94
-#, php-format
-msgid "Close"
+msgid "Convert"
 msgstr ""
 
-#: vice-versa.php:61
-#: vice-versa.php:96
-#, php-format
-msgid "Debug Mode"
-msgstr ""
-
-#: vice-versa.php:86
-#, php-format
-msgid "Page #%s [<em>%s</em>] was successfully converted to a post and added to categories %s."
-msgstr ""
-
-#: vice-versa.php:102
-#, php-format
-msgid "No parent"
-msgstr ""
-
-#: vice-versa.php:113
-#, php-format
-msgid "Post #%s [<em>%s</em>] was successfully converted to a page and assigned to parent #%s [<em>%s</em>]."
-msgstr ""
-
-#: vice-versa.php:121
-#, php-format
-msgid "Page To Post"
-msgstr ""
-
-#: vice-versa.php:124
-#, php-format
-msgid "Select pages and categories to convert to posts."
-msgstr ""
-
-#: vice-versa.php:134
-#: vice-versa.php:210
-#, php-format
-msgid "Page"
-msgstr ""
-
-#: vice-versa.php:134
-#: vice-versa.php:210
-#, php-format
-msgid "Limit"
-msgstr ""
-
-#: vice-versa.php:134
-#: vice-versa.php:210
-#, php-format
-msgid "Total Items"
-msgstr ""
-
-#: vice-versa.php:139
-#: vice-versa.php:175
-#: vice-versa.php:218
-#: vice-versa.php:252
-#: vice-versa.php:295
-#: vice-versa.php:301
-#, php-format
 msgid "ID"
 msgstr ""
 
-#: vice-versa.php:140
-#: vice-versa.php:176
-#, php-format
-msgid "Page (Categories)"
-msgstr ""
-
-#: vice-versa.php:141
-#: vice-versa.php:177
-#: vice-versa.php:220
-#: vice-versa.php:254
-#, php-format
-msgid "Date"
-msgstr ""
-
-#: vice-versa.php:160
-#, php-format
-msgid "Toggle Categories"
-msgstr ""
-
-#: vice-versa.php:184
-#, php-format
-msgid "Bulk Category Select"
-msgstr ""
-
-#: vice-versa.php:188
-#: vice-versa.php:266
-#, php-format
-msgid "Submit"
-msgstr ""
-
-#: vice-versa.php:199
-#, php-format
-msgid "Post To Page"
-msgstr ""
-
-#: vice-versa.php:202
-#, php-format
-msgid "Select posts and a parents(optional) to convert to pages."
-msgstr ""
-
-#: vice-versa.php:206
-#, php-format
-msgid "Posts"
-msgstr ""
-
-#: vice-versa.php:219
-#: vice-versa.php:253
-#, php-format
-msgid "Post (Parents)"
-msgstr ""
-
-#: vice-versa.php:241
-#, php-format
-msgid "Toggle Parents"
-msgstr ""
-
-#: vice-versa.php:262
-#, php-format
-msgid "Bulk Parent Select"
-msgstr ""
-
-#: vice-versa.php:275
-msgid "Order Lists By"
-msgstr ""
-
-#: vice-versa.php:283
-#: vice-versa.php:301
-#: vice-versa.php:313
-msgid "Ascending"
-msgstr ""
-
-#: vice-versa.php:289
-#: vice-versa.php:295
-#: vice-versa.php:307
-msgid "Descending"
-msgstr ""
-
-#: vice-versa.php:283
-#: vice-versa.php:289
 msgid "Title"
 msgstr ""
 
-#: vice-versa.php:307
-#: vice-versa.php:313
 msgid "Date"
 msgstr ""
 
-#: vice-versa.php:322
-#, php-format
-msgid "Version"
+msgid "Assign To"
 msgstr ""
 
-#: vice-versa.php:786
-#: vice-versa.php:804
-#, php-format
-msgid "Category"
+msgid "Debug Mode"
 msgstr ""
 
-#: vice-versa.php:769
-#: vice-versa.php:805
-#, php-format
-msgid "Count"
+msgid "Page"
 msgstr ""
 
-#: vice-versa.php:771
-#: vice-versa.php:808
-#, php-format
-msgid "View"
+msgid "New Permalink"
 msgstr ""
 
-#: vice-versa.php:771
-#: vice-versa.php:808
-#, php-format
-msgid "Increase height"
+msgid "was successfully converted to a <strong>Post</strong> and assigned to category(s)"
 msgstr ""
 
-#: vice-versa.php:771
-#: vice-versa.php:808
-#, php-format
-msgid "Decrease height"
+msgid "No items were selected. Please select items using the checkboxes."
 msgstr ""
 
-#: vice-versa.php:828
-#, php-format
-msgid "Select A Page"
+msgid "No Parent"
+msgstr ""
+
+msgid "Post"
+msgstr ""
+
+msgid "was successfully converted to a <strong>Page</strong> and assigned to parent"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Vice Versa is a post-type converter. Follow the steps below to convert items from one post-type to another."
+msgstr ""
+
+msgid "Always backup your data before making changes to your website."
+msgstr ""
+
+msgid 'Select a conversion mode using the <code>Post To Page</code> and <code>Page To Post</code> buttons. The <input type="button" class="button-primary" value="blue" /> button is the selected conversion mode.'
+msgstr ""
+
+msgid "Optional: Select a Parent or Categories to assign your Post or Page to. Use the bulk Parent or Category selector located at the bottom of the list table if needed. The Parents and Categories selectors will become visible depending on which conversion mode is selected."
+msgstr ""
+
+msgid "Select Posts or Pages to convert by either using the <code>Convert</code> link for each item or by using the checkboxes and <code>Bulk Actions</code> menu."
+msgstr ""
+
+msgid "<strong>Important</strong>: Vice Versa does not redirect. The links to the converted items will change automatically! You will be provided with new permalinks during the conversion process. Be prepared to change menu links if you have custom menus or have links hard-coded in your theme."
+msgstr ""
+
+msgid "Premium Tech Support"
+msgstr ""
+
+msgid "<strong>Another <em><strong>Quality</strong></em> Work From"
+msgstr ""
+
+msgid "Vice Versa Version"
+msgstr ""
+
+msgid "Advertise Here"
+msgstr ""
+
+msgid "Post To Page"
+msgstr ""
+
+msgid "Page To Post"
+msgstr ""
+
+msgid "Items Per Page"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+msgid "Bulk Category Selector"
+msgstr ""
+
+msgid "Error: Duplicate Selected!"
+msgstr ""
+
+msgid "Bulk Parent Selector"
+msgstr ""
+
+msgid "Are you sure you want to convert that item? Press OK to continue or Cancel to return."
+msgstr ""
+
+msgid "Select A Category"
+msgstr ""
+
+msgid "Add another category"
+msgstr ""
+
+msgid "Remove this category"
+msgstr ""
+
+msgid "Select A Parent Page"
 msgstr ""
