@@ -4,7 +4,7 @@
  * Plugin Name: Vice Versa
  * Plugin URI: http://jasonlau.biz
  * Description: Convert Pages to Posts and Vice Versa
- * Version: 2.1.4 10/2011
+ * Version: 2.1.5
  * Author: Jason Lau
  * Author URI: http://jasonlau.biz
  * Disclaimer: Use at your own risk. No warranty expressed or implied.
@@ -27,7 +27,7 @@
  */
 
 
-define('VICEVERSA_VERSION', '2.1.4');
+define('VICEVERSA_VERSION', '2.1.5');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa', '/wp-content/plugins/vice-versa/vice-versa.pot');
@@ -275,8 +275,8 @@ class ViceVersa_List_Table extends WP_List_Table {
             $categories = get_categories('hide_empty=0&order=asc');
             $output .= "<select name=\"parents[]\">\n<option value=\"\">" . __('Select A Category', 'vice-versa') . "</option>\n";
             foreach($categories as $cat):
-               $output .= "<option value=\"" . $cat->term_id . "|vice-versa|";
-               $post_title = (strlen($cat->cat_name) > 50) ? substr($cat->cat_name, 0, 50) . '...' : $cat->cat_name;
+               $output .= "<option title=\"" . $cat->cat_name . "\" value=\"" . $cat->term_id . "|vice-versa|";
+               $post_title = (strlen($cat->cat_name) > 25) ? substr($cat->cat_name, 0, 25) . '...' : $cat->cat_name;
                $output .= $cat->cat_name . "\">";
                $output .= $cat->cat_name . " (" . $cat->category_count . ")</option>\n";
             endforeach;
@@ -289,8 +289,8 @@ class ViceVersa_List_Table extends WP_List_Table {
             $output .= "<select name=\"parents[]\">\n<option value=\"\">" . __('Select A Parent Page', 'vice-versa') . "</option>\n";
             foreach ($parents as $parent):
                $post = get_post(intval($parent->ID));
-               $output .= "<option value=\"" . $post->ID . "|vice-versa|";
-               $post_title = (strlen($post->post_title) > 50) ? substr($post->post_title, 0, 50) . '...' : $post->post_title;
+               $output .= "<option title=\"" . $post->post_title . "\" value=\"" . $post->ID . "|vice-versa|";
+               $post_title = (strlen($post->post_title) > 25) ? substr($post->post_title, 0, 25) . '...' : $post->post_title;
                $output .= $post_title . "\">";
                $output .= $post_title . "</option>\n";
             endforeach;
@@ -371,16 +371,16 @@ function viceversa_display(){
     <div class="wrap">
       <div id="icon-tools" class="icon32"><br/></div>
         <h2>Vice Versa</h2>
-        <?php echo __('Convert Pages To Posts And Vice Versa', 'vice-versa') ?><br />
+        <?php _e('Convert Pages To Posts And Vice Versa', 'vice-versa') ?><br />
         <div class="viceversa-info hidden">
-        <input type="button" class="viceversa-close-info-icon button-secondary" title="<?php echo __('Close', 'vice-versa') ?>" value="x" />
-            <p><?php echo __('Vice Versa is a post-type converter. Follow the steps below to convert items from one post-type to another.', 'vice-versa') ?></p>
+        <input type="button" class="viceversa-close-info-icon button-secondary" title="<?php _e('Close', 'vice-versa') ?>" value="x" />
+            <p><?php _e('Vice Versa is a post-type converter. Follow the steps below to convert items from one post-type to another.', 'vice-versa') ?></p>
             <ol start="1">
-       <li><?php echo __('Always backup your data before making changes to your website.', 'vice-versa') ?></li>     
-	<li><?php echo __('Select a conversion mode using the <code>Post To Page</code> and <code>Page To Post</code> buttons. The <input type="button" class="button-primary" value="blue" /> button is the selected conversion mode.', 'vice-versa') ?></li>
-	<li><?php echo __('Optional: Select a Parent or Categories to assign your Post or Page to. Use the bulk Parent or Category selector located at the bottom of the list table if needed. The Parents and Categories selectors will become visible depending on which conversion mode is selected.', 'vice-versa') ?></li>
-	<li><?php echo __('Select Posts or Pages to convert by either using the <code>Convert</code> link for each item or by using the checkboxes and <code>Bulk Actions</code> menu.', 'vice-versa') ?></li>
-    <li><?php echo __('<strong>Important</strong>: Vice Versa does not redirect. The links to the converted items will change automatically! You will be provided with new permalinks during the conversion process. Be prepared to change menu links if you have custom menus or have links hard-coded in your theme.', 'vice-versa') ?></li>
+       <li><?php _e('Always backup your data before making changes to your website.', 'vice-versa') ?></li>     
+	<li><?php _e('Select a conversion mode using the <code>Post To Page</code> and <code>Page To Post</code> buttons. The <input type="button" class="button-primary" value="blue" /> button is the selected conversion mode.', 'vice-versa') ?></li>
+	<li><?php _e('Optional: Select a Parent or Categories to assign your Post or Page to. Use the bulk Parent or Category selector located at the bottom of the list table if needed. The Parents and Categories selectors will become visible depending on which conversion mode is selected.', 'vice-versa') ?></li>
+	<li><?php _e('Select Posts or Pages to convert by either using the <code>Convert</code> link for each item or by using the checkboxes and <code>Bulk Actions</code> menu.', 'vice-versa') ?></li>
+    <li><?php _e('<strong>Important</strong>: Vice Versa does not redirect. The links to the converted items will change automatically! You will be provided with new permalinks during the conversion process. Be prepared to change menu links if you have custom menus or have links hard-coded in your theme.', 'vice-versa') ?></li>
     <li>Premium Tech Support - $25.00/hr <form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="RZ8KMAZYEDURL"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynow_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form>
 </ol>
 <br /> 
@@ -397,7 +397,7 @@ function viceversa_display(){
         </form>
 <div id="viceversa-assign-to" style="display: none;"><div class="viceversa-assign-to-menu"><?php echo $wp_list_table->assign_to($p_type);?></div></div>
 <br />
-<code><?php echo __('<strong>Another <em><strong>Quality</strong></em> Work From', 'vice-versa') ?>  <a href="http://JasonLau.biz" target="_blank">JasonLau.biz</a></strong> - &copy;Jason Lau</code> <code>[<?php echo __('Vice Versa Version', 'vice-versa') ?>: <?php echo VICEVERSA_VERSION; ?>]</code>
+<code><?php _e('<strong>Another <em><strong>Quality</strong></em> Work From', 'vice-versa') ?>  <a href="http://JasonLau.biz" target="_blank">JasonLau.biz</a></strong> - &copy;Jason Lau</code> <code>[<?php _e('Vice Versa Version', 'vice-versa') ?>: <?php echo VICEVERSA_VERSION; ?>]</code>
 
 </div><div id="viceversa-right-panel" class="alignright">
 <?php
@@ -405,7 +405,7 @@ function viceversa_display(){
 	$response = wp_remote_get('http://jasonlau.biz/viceversa/remote.php?version='.VICEVERSA_VERSION);
 if(is_wp_error($response)):
    ?>
-   <a href="http://jasonlau.biz/home/contact-me" target="_blank"><?php echo __('Advertise Here', 'vice-versa') ?></a>
+   <a href="http://jasonlau.biz/home/contact-me" target="_blank"><?php _e('Advertise Here', 'vice-versa') ?></a>
    <?php
 else:
    echo $response['body'];
@@ -467,7 +467,7 @@ jQuery.cookie = function(name, value, options) {
     }
 };
     jQuery(function($){
-	   $("div.actions").first().prepend('<input type="button" class="vv-mode action <?php if($p_type == 'post') echo "button-primary"; else echo "button-secondary"; ?>" rel="post" value="<?php echo __('Post To Page', 'vice-versa') ?>" /> <input type="button" class="vv-mode action <?php if($p_type == 'page') echo "button-primary"; else echo "button-secondary"; ?>" rel="page" value="<?php echo __('Page To Post', 'vice-versa') ?>" /> <strong><?php echo __('Items Per Page', 'vice-versa') ?>:</strong> <input type="text" id="per-page" size="4" value="<?php echo $per_page ?>" /><input class="vv-go button-secondary action" type="submit" value="<?php echo __('Go', 'vice-versa') ?>" />');
+	   $("div.actions").first().prepend('<input type="button" class="vv-mode action <?php if($p_type == 'post') echo "button-primary"; else echo "button-secondary"; ?>" rel="post" value="<?php _e('Post To Page', 'vice-versa') ?>" /> <input type="button" class="vv-mode action <?php if($p_type == 'page') echo "button-primary"; else echo "button-secondary"; ?>" rel="page" value="<?php _e('Page To Post', 'vice-versa') ?>" /> <strong><?php _e('Items Per Page', 'vice-versa') ?>:</strong> <input type="text" id="per-page" size="4" value="<?php echo $per_page ?>" /><input class="vv-go button-secondary action" type="submit" value="<?php _e('Go', 'vice-versa') ?>" />');
        $("#doaction").after(' <input class="vv-help button-secondary hidden" type="button" value="?" title="Info" />');
        $('.vv-help').css('border-color','#FFFF00');
        $(".vv-mode").each(function(){
@@ -505,7 +505,7 @@ jQuery.cookie = function(name, value, options) {
     $(".viceversa-assign-to").each(function(){
         $(this).html($("#viceversa-assign-to").html());
     });
-    $("#viceversa-form").append('<fieldset class="viceversa-bulk-assign-field viceversa-info"><legend style="padding: 0px 4px"><strong><?php echo __('Bulk Category Selector', 'vice-versa') ?></strong></legend><div id="viceversa-assign-error"><?php echo __('Error: Duplicate Selected!', 'vice-versa') ?></div><div id="viceversa-bulk-assign">' + $("#viceversa-assign-to").html() + '</div></fieldset>');
+    $("#viceversa-form").append('<fieldset class="viceversa-bulk-assign-field viceversa-info"><legend style="padding: 0px 4px"><strong><?php _e('Bulk Category Selector', 'vice-versa') ?></strong></legend><div id="viceversa-assign-error"><?php _e('Error: Duplicate Selected!', 'vice-versa') ?></div><div id="viceversa-bulk-assign">' + $("#viceversa-assign-to").html() + '</div></fieldset>');
 <?php        
 	break;
 
@@ -514,7 +514,7 @@ jQuery.cookie = function(name, value, options) {
     $(".viceversa-assign-to").each(function(){
        $(this).html($("#viceversa-assign-to").html()); 
     });
-    $("#viceversa-form").append('<fieldset class="viceversa-bulk-assign-field viceversa-info"><legend style="padding: 0px 4px"><strong><?php echo __('Bulk Parent Selector', 'vice-versa') ?></strong></legend><div id="viceversa-bulk-assign">' + $("#viceversa-assign-to").html() + '</div></fieldset>');
+    $("#viceversa-form").append('<fieldset class="viceversa-bulk-assign-field viceversa-info"><legend style="padding: 0px 4px"><strong><?php _e('Bulk Parent Selector', 'vice-versa') ?></strong></legend><div id="viceversa-bulk-assign">' + $("#viceversa-assign-to").html() + '</div></fieldset>');
 <?php     
     }
 ?>
@@ -617,11 +617,11 @@ jQuery.cookie = function(name, value, options) {
         }
     };
     
-    $("a:contains('<?php echo __('Convert', 'vice-versa') ?>')").each(function(){        
+    $("a:contains('<?php _e('Convert', 'vice-versa') ?>')").each(function(){        
         var url = $(this).attr('href').split('='); 
         $(this).attr({'href':'javascript:void(0)'});
         $(this).bind('mouseup',function(){
-            var c = confirm('<?php echo __('Are you sure you want to convert that item? Press OK to continue or Cancel to return.', 'vice-versa') ?>');
+            var c = confirm('<?php _e('Are you sure you want to convert that item? Press OK to continue or Cancel to return.', 'vice-versa') ?>');
             if(c == true){
                $("input[data-id='"+url[3]+"']").prop('checked',true);
                $("select[name='action'], select[name='action2']").val('convert');
