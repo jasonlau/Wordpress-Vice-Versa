@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Vice Versa package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Vice Versa 2.1.5\n"
+"Project-Id-Version: Vice Versa 2.1.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/vice-versa\n"
-"POT-Creation-Date: 2011-10-05 15:43:46+00:00\n"
+"POT-Creation-Date: 2011-10-06 18:37:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "posts"
 msgstr ""
 
-#: vice-versa.php:71 vice-versa.php:111 vice-versa.php:620
+#: vice-versa.php:71 vice-versa.php:111 vice-versa.php:623
 msgid "Convert"
 msgstr ""
 
@@ -52,7 +52,7 @@ msgstr ""
 msgid "No Parent"
 msgstr ""
 
-#: vice-versa.php:225 vice-versa.php:376
+#: vice-versa.php:225 vice-versa.php:377
 msgid "Close"
 msgstr ""
 
@@ -60,44 +60,44 @@ msgstr ""
 msgid "Invalid post type"
 msgstr ""
 
-#: vice-versa.php:276
+#: vice-versa.php:277
 msgid "Select A Category"
 msgstr ""
 
-#: vice-versa.php:283
+#: vice-versa.php:284
 msgid "Add another category"
 msgstr ""
 
-#: vice-versa.php:283
+#: vice-versa.php:284
 msgid "Remove this category"
 msgstr ""
 
-#: vice-versa.php:289
+#: vice-versa.php:290
 msgid "Select A Parent Page"
 msgstr ""
 
-#: vice-versa.php:374
+#: vice-versa.php:375
 msgid "Convert Pages To Posts And Vice Versa"
 msgstr ""
 
-#: vice-versa.php:377
+#: vice-versa.php:378
 msgid ""
 "Vice Versa is a post-type converter. Follow the steps below to convert items "
 "from one post-type to another."
 msgstr ""
 
-#: vice-versa.php:379
+#: vice-versa.php:380
 msgid "Always backup your data before making changes to your website."
 msgstr ""
 
-#: vice-versa.php:380
+#: vice-versa.php:381
 msgid ""
 "Select a conversion mode using the <code>Post To Page</code> and <code>Page "
 "To Post</code> buttons. The <input type=\"button\" class=\"button-primary\" "
 "value=\"blue\" /> button is the selected conversion mode."
 msgstr ""
 
-#: vice-versa.php:381
+#: vice-versa.php:382
 msgid ""
 "Optional: Select a Parent or Categories to assign your Post or Page to. Use "
 "the bulk Parent or Category selector located at the bottom of the list table "
@@ -105,14 +105,14 @@ msgid ""
 "depending on which conversion mode is selected."
 msgstr ""
 
-#: vice-versa.php:382
+#: vice-versa.php:383
 msgid ""
 "Select Posts or Pages to convert by either using the <code>Convert</code> "
 "link for each item or by using the checkboxes and <code>Bulk Actions</code> "
 "menu."
 msgstr ""
 
-#: vice-versa.php:383
+#: vice-versa.php:384
 msgid ""
 "<strong>Important</strong>: Vice Versa does not redirect. The links to the "
 "converted items will change automatically! You will be provided with new "
@@ -120,47 +120,51 @@ msgid ""
 "if you have custom menus or have links hard-coded in your theme."
 msgstr ""
 
-#: vice-versa.php:400
+#: vice-versa.php:397
+msgid "Search"
+msgstr ""
+
+#: vice-versa.php:402
 msgid "<strong>Another <em><strong>Quality</strong></em> Work From"
 msgstr ""
 
-#: vice-versa.php:400
+#: vice-versa.php:402
 msgid "Vice Versa Version"
 msgstr ""
 
-#: vice-versa.php:408
+#: vice-versa.php:410
 msgid "Advertise Here"
 msgstr ""
 
-#: vice-versa.php:470
+#: vice-versa.php:472
 msgid "Post To Page"
 msgstr ""
 
-#: vice-versa.php:470
+#: vice-versa.php:472
 msgid "Page To Post"
 msgstr ""
 
-#: vice-versa.php:470
+#: vice-versa.php:472
 msgid "Items Per Page"
 msgstr ""
 
-#: vice-versa.php:470
+#: vice-versa.php:472
 msgid "Go"
 msgstr ""
 
-#: vice-versa.php:508
+#: vice-versa.php:511
 msgid "Bulk Category Selector"
 msgstr ""
 
-#: vice-versa.php:508
+#: vice-versa.php:511
 msgid "Error: Duplicate Selected!"
 msgstr ""
 
-#: vice-versa.php:517
+#: vice-versa.php:520
 msgid "Bulk Parent Selector"
 msgstr ""
 
-#: vice-versa.php:624
+#: vice-versa.php:627
 msgid ""
 "Are you sure you want to convert that item? Press OK to continue or Cancel "
 "to return."
@@ -170,9 +174,9 @@ msgstr ""
 msgid "Vice Versa"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (Vice Versa 2.1.5)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Vice Versa 2.1.6)  #-#-#-#-#
 #. Plugin URI of the plugin/theme
-#. #-#-#-#-#  plugin.pot (Vice Versa 2.1.5)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Vice Versa 2.1.6)  #-#-#-#-#
 #. Author URI of the plugin/theme
 msgid "http://jasonlau.biz"
 msgstr ""

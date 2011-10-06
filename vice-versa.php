@@ -4,7 +4,7 @@
  * Plugin Name: Vice Versa
  * Plugin URI: http://jasonlau.biz
  * Description: Convert Pages to Posts and Vice Versa
- * Version: 2.1.5
+ * Version: 2.1.6
  * Author: Jason Lau
  * Author URI: http://jasonlau.biz
  * Disclaimer: Use at your own risk. No warranty expressed or implied.
@@ -27,7 +27,7 @@
  */
 
 
-define('VICEVERSA_VERSION', '2.1.5');
+define('VICEVERSA_VERSION', '2.1.6');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa', '/wp-content/plugins/vice-versa/vice-versa.pot');
@@ -252,11 +252,12 @@ class ViceVersa_List_Table extends WP_List_Table {
         
         $orderby = (!$_REQUEST['orderby']) ? '' : ' ORDER BY ' . $_REQUEST['orderby'];
         $order = (!$_REQUEST['order']) ? '' : ' ' . $_REQUEST['order'];
+        $search = (!$_REQUEST['s']) ? "" : " AND " . $_REQUEST['viceversa_search_mode'] . " REGEXP '" . $_REQUEST['s'] . "'";        
         
         if(!current_user_can($post_type_object->cap->edit_others_posts)):
-            $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft' ) AND post_author = " . get_current_user_id() . $orderby . $order;
+            $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft' ) AND post_author = " . get_current_user_id() . $search . $orderby . $order;
         else:
-         $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft' ) " . $orderby . $order;   
+         $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft' ) " . $search . $orderby . $order;   
         endif;
         
         $data = $wpdb->get_results($query);
@@ -356,7 +357,7 @@ function viceversa_display(){
         background: #ECECEC;
         border: 1px solid #CCC;
         padding: 0 10px;
-        margin-top: 5px;
+        margin: 5px 0px;
         border-radius: 5px;
         -moz-border-radius: 5px;
         -webkit-border-radius: 5px;
@@ -393,6 +394,7 @@ function viceversa_display(){
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <input type="hidden" id="p-type" name="p_type" value="<?php echo $p_type ?>" />
             <input type="hidden" id="per-page-hidden" name="per_page" value="10" />
+            <div id="viceversa-search"><?php $wp_list_table->search_box(__('Search'), 'post') ?></div>
             <?php $wp_list_table->display() ?>
         </form>
 <div id="viceversa-assign-to" style="display: none;"><div class="viceversa-assign-to-menu"><?php echo $wp_list_table->assign_to($p_type);?></div></div>
@@ -469,6 +471,7 @@ jQuery.cookie = function(name, value, options) {
     jQuery(function($){
 	   $("div.actions").first().prepend('<input type="button" class="vv-mode action <?php if($p_type == 'post') echo "button-primary"; else echo "button-secondary"; ?>" rel="post" value="<?php _e('Post To Page', 'vice-versa') ?>" /> <input type="button" class="vv-mode action <?php if($p_type == 'page') echo "button-primary"; else echo "button-secondary"; ?>" rel="page" value="<?php _e('Page To Post', 'vice-versa') ?>" /> <strong><?php _e('Items Per Page', 'vice-versa') ?>:</strong> <input type="text" id="per-page" size="4" value="<?php echo $per_page ?>" /><input class="vv-go button-secondary action" type="submit" value="<?php _e('Go', 'vice-versa') ?>" />');
        $("#doaction").after(' <input class="vv-help button-secondary hidden" type="button" value="?" title="Info" />');
+       $("#post-search-input").after(' <select class="vv-search-mode" name="viceversa_search_mode"><option value="ID"<?php if($_REQUEST['viceversa_search_mode'] == 'ID'): ?> selected="selected"<?php endif; ?>>ID</option><option value="post_title"<?php if(!$_REQUEST['viceversa_search_mode'] || $_REQUEST['viceversa_search_mode'] == 'post_title'): ?> selected="selected"<?php endif; ?>>Title</option><option value="post_date"<?php if($_REQUEST['viceversa_search_mode'] == 'post_date'): ?> selected="selected"<?php endif; ?>>Date</option><option value="post_content"<?php if($_REQUEST['viceversa_search_mode'] == 'post_content'): ?> selected="selected"<?php endif; ?>>Content</option></select>');
        $('.vv-help').css('border-color','#FFFF00');
        $(".vv-mode").each(function(){
 	   $(this).bind('mouseup',function(){

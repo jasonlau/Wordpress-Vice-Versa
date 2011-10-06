@@ -2,14 +2,14 @@
 
 Contributors: Jason Lau
 Donate link: http://jasonlau.biz
-Tags: post, page, type, kind, convert, converter, convertr, revert, turn, into, to, make, change, swap, category, categories, parent, parents, manage, vice, vise, versa, jason, lau, jasonlau, jasonlau.biz
+Tags: post, page, type, kind, convert, converts, converter, convertr, revert, turn, into, to, make, change, swap, category, categories, parent, parents, manage, vice, vise, versa, jason, lau, jasonlau, jasonlau.biz
 Requires at least: 2.8.4 
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 Tested up to: 3.2.1
 
 == Description ==
 
-Vice Versa vice versa vice-versa viceversa easily converts WordPress Posts to Pages and Pages to Posts. You can also assign a Page or Post a parent or category(s) as you are converting from one to the other. Vice Versa is easy to install and use. No database tables are affected during installation and there are no additional settings required.
+Vice Versa vice versa vice-versa viceversa can easily convert WordPress Posts to Pages and Pages to Posts. You can also assign a Page or Post a parent or category(s) as you are converting from one to the other. Vice Versa is easy to install and use. No database tables are affected during installation and there are no additional settings required.
 
 == Installation ==
 
@@ -60,6 +60,9 @@ Total rebuild and redesign.
 = 2.1.5 =
 Limited the length of select menu labels to 25 characters and added the full label to the tooltip. A few minor changes.
 
+= 2.1.6 =
+Added search field.
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -85,3 +88,6 @@ Total rebuild and redesign.
 
 = 2.1.5 =
 Limited the length of select menu labels to 25 characters and added the full label to the tooltip. A few minor changes.
+
+= 2.1.6 =
+Added search field.
