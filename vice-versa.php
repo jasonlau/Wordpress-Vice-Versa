@@ -4,7 +4,7 @@
  * Plugin Name: Vice Versa
  * Plugin URI: http://jasonlau.biz
  * Description: Convert Pages to Posts and Vice Versa
- * Version: 2.1.6
+ * Version: 2.1.7
  * Author: Jason Lau
  * Author URI: http://jasonlau.biz
  * Disclaimer: Use at your own risk. No warranty expressed or implied.
@@ -27,7 +27,7 @@
  */
 
 
-define('VICEVERSA_VERSION', '2.1.6');
+define('VICEVERSA_VERSION', '2.1.7');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa', '/wp-content/plugins/vice-versa/vice-versa.pot');
@@ -68,7 +68,7 @@ class ViceVersa_List_Table extends WP_List_Table {
     
     function column_ID($item){
         $actions = array(
-            'convert'      => sprintf('<a href="?page=%s&action=%s&p=%s">' . __('Convert', 'vice-versa') . '</a>',$_REQUEST['page'],'convert',$item->ID)
+            'convert'      => sprintf('<a href="?page=%s&action=%s&p=%s">' . __('Convert', 'vice-versa') . '</a>',$_POST['page'],'convert',$item->ID)
         );
         return sprintf('%1$s %2$s',
             $item->ID,
@@ -114,6 +114,7 @@ class ViceVersa_List_Table extends WP_List_Table {
     }
     
     function process_bulk_action(){
+        global $wp_rewrite, $wpdb;
         if('convert' === $this->current_action()):
             $output = "<div id=\"viceversa-status\" class=\"updated\">
             <input type=\"button\" class=\"viceversa-close-icon button-secondary\" title=\"Close\" value=\"x\" />";
@@ -121,11 +122,11 @@ class ViceVersa_List_Table extends WP_List_Table {
                 $output .= "<strong>" . __('Debug Mode', 'vice-versa') . "</strong>\n";
             endif;
             
-            switch($_REQUEST['p_type']){
+            switch($_POST['p_type']){
                 case 'page':
                 $categories = array('ids' => array(), 'titles' => array());
                 $do_bulk = false;
-                foreach($_REQUEST['parents'] as $category):
+                foreach($_POST['parents'] as $category):
                     if($category != ""):
                         $data = explode("|", $category);
                         $categories[$data[3]]['ids'] = array();
@@ -134,7 +135,7 @@ class ViceVersa_List_Table extends WP_List_Table {
                     endif;
                 endforeach;
                 
-                foreach($_REQUEST['parents'] as $category):
+                foreach($_POST['parents'] as $category):
                     if($category != ""):
                         $data = explode("|", $category);
                         array_push($categories[$data[3]]['ids'], $data[0]);
@@ -144,9 +145,9 @@ class ViceVersa_List_Table extends WP_List_Table {
                 
                 $output .= "<p>\n";
                 
-                foreach($_REQUEST['post'] as $viceversa_page):
+                foreach($_POST['post'] as $viceversa_page):
                     $viceversa_data = explode("|", $viceversa_page);
-                    $viceversa_url = get_bloginfo('url') . "/?page_id=" . $viceversa_data[0];
+                    $viceversa_url = site_url() . "/?p=" . $viceversa_data[0];
                     if($do_bulk):
                         $ids = $categories[0]['ids'];
                         $titles = $categories[0]['titles'];
@@ -162,15 +163,25 @@ class ViceVersa_List_Table extends WP_List_Table {
                     endif;
                     $catlist = (trim($catlist,', ') == "") ? get_cat_name(1) : trim($catlist,', ');
                     $cat_array = (count($ids)<1) ? array(1) : $ids;
-                    $viceversa_page = array();
-                    $viceversa_page['ID'] = intval($viceversa_data[0]);
-                    $viceversa_page['guid'] = $viceversa_url;
-                    $viceversa_page['post_type'] = 'post';
-                    $viceversa_page['post_parent'] = $cat_array;
                     
                     if(!VICEVERSA_DEBUG):
-                        wp_update_post($viceversa_page);
-                        wp_set_post_categories(intval($viceversa_data[0]), $cat_array);
+                    $wpdb->update(
+                    $wpdb->posts,
+                    array(
+                    'guid' => $viceversa_url,
+                    'post_parent' => $cat_array[0]
+                    ),
+                    array( 'ID' => intval($viceversa_data[0]) ),
+                    array(
+                    '%s',
+                    '%d'
+                    ),
+                    array( '%d' )
+                    );
+                    clean_post_cache(intval($viceversa_data[0]));
+                    set_post_type(intval($viceversa_data[0]), 'post');
+                    wp_set_post_categories(intval($viceversa_data[0]), $cat_array);
+                    $wp_rewrite->flush_rules();
                     endif;
                     
                     $new_permalink = get_permalink(intval($viceversa_data[0]));
@@ -181,36 +192,49 @@ class ViceVersa_List_Table extends WP_List_Table {
                 default :
                 $parents = array();
                 $do_bulk = false;
-                foreach($_REQUEST['parents'] as $parent):
+                foreach($_POST['parents'] as $parent):
                     if($parent != ""):
                         $data = explode("|", $parent);
                         if($data[3] == 0) $do_bulk = true;
-                        $parents[intval($data[3])] = $data[0] . "|vice-versa|" . $data[2];
+                        $parents[intval($data[3])] = $data[0] . "|" . $data[2];
                     endif;
                 endforeach;
                 $output .= "<p>\n";
-                if(!$_REQUEST['post']):
+                if(!$_POST['post']):
                     $output .= __('No items were selected. Please select items using the checkboxes.', 'vice-versa');
                 else:
-                  foreach($_REQUEST['post'] as $viceversa_post):
+                  foreach($_POST['post'] as $viceversa_post):
                     $viceversa_data = explode("|", $viceversa_post);
-                    $viceversa_url = get_bloginfo('url') . "/?page_id=" . $viceversa_data[0];
+                    $viceversa_url = site_url() . "/?page_id=" . $viceversa_data[0];
                     if($do_bulk):
                         $p = $parents[0];
                     else:
                         $p = $parents[$viceversa_data[0]];
                     endif;
-                    $parent = ($p == "") ? "0|vice-versa|" . __('No Parent', 'vice-versa') . "" : $p;
-                    $parent = explode("|vice-versa|", $parent);
-                    $viceversa_page = array();
-                    $viceversa_page['ID'] = intval($viceversa_data[0]);
-                    $viceversa_page['guid'] = $viceversa_url;
-                    $viceversa_page['post_type'] = 'page';
-                    $viceversa_page['post_parent'] = $parent[0];
-                    if(!VICEVERSA_DEBUG):
-                        wp_update_post($viceversa_page);
-                        wp_set_post_categories(intval($viceversa_data[0]), array($parent[0]));
+                    
+                    $parent = ($p == "") ? "0|" . __('No Parent', 'vice-versa') . "" : $p;
+                    $parent = explode("|", $parent);
+                    
+                    if(!VICEVERSA_DEBUG):                   
+                    $wpdb->update(
+                    $wpdb->posts,
+                    array(
+                    'guid' => $viceversa_url,
+                    'post_parent' => intval($parent[0])
+                    ),
+                    array( 'ID' => intval($viceversa_data[0]) ),
+                    array(
+                    '%s',
+                    '%d'
+                    ),
+                    array( '%d' )
+                    );
+                    clean_post_cache(intval($viceversa_data[0]));
+                    set_post_type(intval($viceversa_data[0]), 'page');
+                    wp_set_post_categories(intval($viceversa_data[0]), array(intval($parent[0])));
+                    $wp_rewrite->flush_rules();    
                     endif;
+                    
                     $permalink = get_permalink(intval($viceversa_data[0]));
                     $output .= sprintf(__('<strong>' . __('Post', 'vice-versa') . '</strong> #%s <code><a href="%s" target="_blank" title="' . __('New Permalink', 'vice-versa') . '">%s</a></code> ' . __('was successfully converted to a <strong>Page</strong> and assigned to parent', 'vice-versa') . ' #%s <code>%s</code>. <a href="%s" target="_blank" title="' . __('New Permalink', 'vice-versa') . '">' . __('New Permalink', 'vice-versa') . '</a>', 'vice-versa'), $viceversa_data[0], $permalink, $viceversa_data[2], $parent[0], $parent[1], $permalink) . "<br />\n";
                  endforeach; 
@@ -230,7 +254,7 @@ class ViceVersa_List_Table extends WP_List_Table {
         
         $this->process_bulk_action();
         
-        $per_page = (!$_REQUEST['per_page']) ? 10 : $_REQUEST['per_page'];
+        $per_page = (!$_POST['per_page']) ? 10 : $_POST['per_page'];
         
         $columns = $this->get_columns();
         $hidden = array();
@@ -238,26 +262,26 @@ class ViceVersa_List_Table extends WP_List_Table {
         
         $this->_column_headers = array($columns, $hidden, $sortable);
         
-        if(!isset( $_REQUEST['p_type'])):
+        if(!isset( $_POST['p_type'])):
 			$p_type = 'post';
-		elseif(in_array( $_REQUEST['p_type'], get_post_types(array( 'show_ui' => true)))):
-			$p_type = $_REQUEST['p_type'];
+		elseif(in_array( $_POST['p_type'], get_post_types(array( 'show_ui' => true)))):
+			$p_type = $_POST['p_type'];
 		else:
 			wp_die(__('Invalid post type'));
         endif;
             
-		$_REQUEST['p_type'] = $p_type;
+		$_POST['p_type'] = $p_type;
 
 		$post_type_object = get_post_type_object($p_type); 
         
-        $orderby = (!$_REQUEST['orderby']) ? '' : ' ORDER BY ' . $_REQUEST['orderby'];
-        $order = (!$_REQUEST['order']) ? '' : ' ' . $_REQUEST['order'];
-        $search = (!$_REQUEST['s']) ? "" : " AND " . $_REQUEST['viceversa_search_mode'] . " REGEXP '" . $_REQUEST['s'] . "'";        
+        $orderby = (!$_POST['orderby']) ? '' : ' ORDER BY ' . $_POST['orderby'];
+        $order = (!$_POST['order']) ? '' : ' ' . $_POST['order'];
+        $search = (!$_POST['s']) ? "" : " AND " . $_POST['viceversa_search_mode'] . " REGEXP '" . $_POST['s'] . "'";        
         
         if(!current_user_can($post_type_object->cap->edit_others_posts)):
-            $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft' ) AND post_author = " . get_current_user_id() . $search . $orderby . $order;
+            $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft', 'inherit' ) AND post_author = " . get_current_user_id() . $search . $orderby . $order;
         else:
-         $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft' ) " . $search . $orderby . $order;   
+         $query = "SELECT * FROM $wpdb->posts  WHERE post_type = '$p_type' AND post_status NOT IN ( 'trash', 'auto-draft', 'inherit' ) " . $search . $orderby . $order;   
         endif;
         
         $data = $wpdb->get_results($query);
@@ -309,8 +333,8 @@ class ViceVersa_List_Table extends WP_List_Table {
 function viceversa_display(){
     $wp_list_table = new ViceVersa_List_Table();
     $wp_list_table->prepare_items();
-    $p_type = (!$_REQUEST['p_type']) ? 'post' : $_REQUEST['p_type'];
-    $per_page = (!$_REQUEST['per_page']) ? 10 : $_REQUEST['per_page'];
+    $p_type = (!$_POST['p_type']) ? 'post' : $_POST['p_type'];
+    $per_page = (!$_POST['per_page']) ? 10 : $_POST['per_page'];
     ?>
     <style type="text/css">
     <!--
@@ -390,8 +414,8 @@ function viceversa_display(){
         if(defined("VICEVERSA_STATUS")) echo VICEVERSA_STATUS
         ?>
         <div id="viceversa-left-panel" class="alignleft">
-        <form id="viceversa-form" method="get">        
-            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+        <form id="viceversa-form" method="post">        
+            <input type="hidden" name="page" value="<?php echo $_POST['page'] ?>" />
             <input type="hidden" id="p-type" name="p_type" value="<?php echo $p_type ?>" />
             <input type="hidden" id="per-page-hidden" name="per_page" value="10" />
             <div id="viceversa-search"><?php $wp_list_table->search_box(__('Search'), 'post') ?></div>
@@ -469,9 +493,14 @@ jQuery.cookie = function(name, value, options) {
     }
 };
     jQuery(function($){
+        try{
+            $("#viceversa-form input[type='checkbox']").prop('checked');
+            }catch(e){
+                alert('<?php _e('Error: Vice Versa is not compatible with old versions of jQuery. Please update jQuery to the latest version from jquery.com. jquery.js is located in wp-includes/js/jquery/', 'vice-versa') ?>');
+            }
 	   $("div.actions").first().prepend('<input type="button" class="vv-mode action <?php if($p_type == 'post') echo "button-primary"; else echo "button-secondary"; ?>" rel="post" value="<?php _e('Post To Page', 'vice-versa') ?>" /> <input type="button" class="vv-mode action <?php if($p_type == 'page') echo "button-primary"; else echo "button-secondary"; ?>" rel="page" value="<?php _e('Page To Post', 'vice-versa') ?>" /> <strong><?php _e('Items Per Page', 'vice-versa') ?>:</strong> <input type="text" id="per-page" size="4" value="<?php echo $per_page ?>" /><input class="vv-go button-secondary action" type="submit" value="<?php _e('Go', 'vice-versa') ?>" />');
        $("#doaction").after(' <input class="vv-help button-secondary hidden" type="button" value="?" title="Info" />');
-       $("#post-search-input").after(' <select class="vv-search-mode" name="viceversa_search_mode"><option value="ID"<?php if($_REQUEST['viceversa_search_mode'] == 'ID'): ?> selected="selected"<?php endif; ?>>ID</option><option value="post_title"<?php if(!$_REQUEST['viceversa_search_mode'] || $_REQUEST['viceversa_search_mode'] == 'post_title'): ?> selected="selected"<?php endif; ?>>Title</option><option value="post_date"<?php if($_REQUEST['viceversa_search_mode'] == 'post_date'): ?> selected="selected"<?php endif; ?>>Date</option><option value="post_content"<?php if($_REQUEST['viceversa_search_mode'] == 'post_content'): ?> selected="selected"<?php endif; ?>>Content</option></select>');
+       $("#post-search-input").after(' <select class="vv-search-mode" name="viceversa_search_mode"><option value="ID"<?php if($_POST['viceversa_search_mode'] == 'ID'): ?> selected="selected"<?php endif; ?>>ID</option><option value="post_title"<?php if(!$_POST['viceversa_search_mode'] || $_POST['viceversa_search_mode'] == 'post_title'): ?> selected="selected"<?php endif; ?>>Title</option><option value="post_date"<?php if($_POST['viceversa_search_mode'] == 'post_date'): ?> selected="selected"<?php endif; ?>>Date</option><option value="post_content"<?php if($_POST['viceversa_search_mode'] == 'post_content'): ?> selected="selected"<?php endif; ?>>Content</option></select>');
        $('.vv-help').css('border-color','#FFFF00');
        $(".vv-mode").each(function(){
 	   $(this).bind('mouseup',function(){
@@ -620,7 +649,7 @@ jQuery.cookie = function(name, value, options) {
         }
     };
     
-    $("a:contains('<?php _e('Convert', 'vice-versa') ?>')").each(function(){        
+    $("form a:contains('<?php _e('Convert', 'vice-versa') ?>')").each(function(){        
         var url = $(this).attr('href').split('='); 
         $(this).attr({'href':'javascript:void(0)'});
         $(this).bind('mouseup',function(){
