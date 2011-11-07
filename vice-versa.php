@@ -4,7 +4,7 @@
  * Plugin Name: Vice Versa
  * Plugin URI: http://jasonlau.biz
  * Description: Convert Pages to Posts and Vice Versa
- * Version: 2.1.7
+ * Version: 2.1.8
  * Author: Jason Lau
  * Author URI: http://jasonlau.biz
  * Disclaimer: Use at your own risk. No warranty expressed or implied.
@@ -27,7 +27,7 @@
  */
 
 
-define('VICEVERSA_VERSION', '2.1.7');
+define('VICEVERSA_VERSION', '2.1.8');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa', '/wp-content/plugins/vice-versa/vice-versa.pot');
@@ -274,8 +274,8 @@ class ViceVersa_List_Table extends WP_List_Table {
 
 		$post_type_object = get_post_type_object($p_type); 
         
-        $orderby = (!$_POST['orderby']) ? '' : ' ORDER BY ' . $_POST['orderby'];
-        $order = (!$_POST['order']) ? '' : ' ' . $_POST['order'];
+        $orderby = (!$_REQUEST['orderby']) ? '' : ' ORDER BY ' . $_REQUEST['orderby'];
+        $order = (!$_REQUEST['order']) ? '' : ' ' . $_REQUEST['order'];
         $search = (!$_POST['s']) ? "" : " AND " . $_POST['viceversa_search_mode'] . " REGEXP '" . $_POST['s'] . "'";        
         
         if(!current_user_can($post_type_object->cap->edit_others_posts)):
@@ -390,6 +390,47 @@ function viceversa_display(){
     .viceversa-hidden{
         display: none;
     }
+    
+    #viceversa-left-panel{
+        z-index: 1;
+        width:100%;
+    }
+    #viceversa-right-panel{
+        z-index: 1;
+    }
+    
+    #viceversa-form{
+        margin: 0px 150px 0px 0px !important;
+    }
+    
+    .wp-list-table{
+        width:100%;
+     }
+     
+     .viceversa-assign-to{
+        width:300px;
+        min-width: 300px !important;
+     }
+     
+     .column-assign_to{
+        width:300px;
+        min-width: 300px !important;
+     }
+     
+     .column-ID{
+        width:100px;
+        min-width: 100px !important;
+     }
+     
+     .column-post_title{
+        width:350px;
+        min-width: 350px !important;
+     }
+     
+     .column-post_date{
+        width:150px;
+        min-width: 150px !important;
+     }
     
     -->
     </style>
@@ -675,7 +716,21 @@ jQuery.cookie = function(name, value, options) {
     _activate();
 	
     }); // jQuery
-      
+    
+    var viceversa_checkWin = function(){
+        if(jQuery(window).width() < 1200){
+                jQuery("#viceversa-right-panel").hide();
+            } else {
+                jQuery("#viceversa-right-panel").show();
+            }
+         
+    };
+    
+    window.onresize = function(){
+        viceversa_checkWin();
+    }; 
+    viceversa_checkWin();
+     
 </script>        
 </div>
 <?php

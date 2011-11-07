@@ -4,7 +4,7 @@ Contributors: Jason Lau
 Donate link: http://jasonlau.biz
 Tags: post, page, type, kind, convert, converts, converter, convertr, revert, turn, into, to, make, change, swap, category, categories, parent, parents, manage, vice, vise, versa, jason, lau, jasonlau, jasonlau.biz
 Requires at least: 2.8.4 
-Stable tag: 2.1.7
+Stable tag: 2.1.8
 Tested up to: 3.2.1
 
 == Description ==
@@ -66,6 +66,9 @@ Added search field.
 = 2.1.7 =
 Critical update. Fixes a few bugs including one which caused a 404 error when using certain permalink structures.
 
+= 2.1.8 =
+Corrects a bug in the table sorting and some CSS bugs.
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -97,3 +100,6 @@ Added search field.
 
 = 2.1.7 =
 Critical update. Fixes a few bugs including one which caused a 404 error when using certain permalink structures.
+
+= 2.1.8 =
+Corrects a bug in the table sorting and some CSS bugs.
