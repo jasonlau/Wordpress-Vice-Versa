@@ -4,12 +4,12 @@
  * Plugin Name: Vice Versa
  * Plugin URI: http://jasonlau.biz
  * Description: Convert Pages to Posts and Vice Versa
- * Version: 2.1.8
+ * Version: 2.1.9
  * Author: Jason Lau
  * Author URI: http://jasonlau.biz
  * Disclaimer: Use at your own risk. No warranty expressed or implied.
  * Always backup your database before making changes.
- * Copyright 2010-2011 http://jasonlau.biz
+ * Copyright 2010-2012 http://jasonlau.biz
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
  */
 
 
-define('VICEVERSA_VERSION', '2.1.8');
+define('VICEVERSA_VERSION', '2.1.9');
 define('VICEVERSA_DEBUG', false); // Test this plugin
 
 load_plugin_textdomain('vice-versa', '/wp-content/plugins/vice-versa/vice-versa.pot');
@@ -178,15 +178,17 @@ class ViceVersa_List_Table extends WP_List_Table {
                     ),
                     array( '%d' )
                     );
-                    clean_post_cache(intval($viceversa_data[0]));
+                    clean_page_cache(intval($viceversa_data[0]));
                     set_post_type(intval($viceversa_data[0]), 'post');
-                    wp_set_post_categories(intval($viceversa_data[0]), $cat_array);
-                    $wp_rewrite->flush_rules();
+                    wp_set_post_categories(intval($viceversa_data[0]), $cat_array);                    
                     endif;
                     
                     $new_permalink = get_permalink(intval($viceversa_data[0]));
                     $output .= sprintf(__('<strong>' . __('Page', 'vice-versa') . '</strong> #%s <code><a href="%s" target="_blank" title="' . __('New Permalink', 'vice-versa') . '">%s</a></code> ' . __('was successfully converted to a <strong>Post</strong> and assigned to category(s)', 'vice-versa') . ' <code>%s</code>. <a href="%s" target="_blank" title="' . __('New Permalink', 'vice-versa') . '">' . __('New Permalink', 'vice-versa') . '</a>', 'vice-versa'), $viceversa_data[0], $new_permalink, $viceversa_data[2], $catlist, $new_permalink) . "<br />\n";
                 endforeach;
+                if(!VICEVERSA_DEBUG): 
+                $wp_rewrite->flush_rules();
+                endif;
                 break;
                 
                 default :
@@ -232,12 +234,14 @@ class ViceVersa_List_Table extends WP_List_Table {
                     clean_post_cache(intval($viceversa_data[0]));
                     set_post_type(intval($viceversa_data[0]), 'page');
                     wp_set_post_categories(intval($viceversa_data[0]), array(intval($parent[0])));
-                    $wp_rewrite->flush_rules();    
                     endif;
                     
                     $permalink = get_permalink(intval($viceversa_data[0]));
                     $output .= sprintf(__('<strong>' . __('Post', 'vice-versa') . '</strong> #%s <code><a href="%s" target="_blank" title="' . __('New Permalink', 'vice-versa') . '">%s</a></code> ' . __('was successfully converted to a <strong>Page</strong> and assigned to parent', 'vice-versa') . ' #%s <code>%s</code>. <a href="%s" target="_blank" title="' . __('New Permalink', 'vice-versa') . '">' . __('New Permalink', 'vice-versa') . '</a>', 'vice-versa'), $viceversa_data[0], $permalink, $viceversa_data[2], $parent[0], $parent[1], $permalink) . "<br />\n";
-                 endforeach; 
+                 endforeach;
+                 if(!VICEVERSA_DEBUG): 
+                 $wp_rewrite->flush_rules();
+                 endif; 
                 endif;                
             }
             $output .= "</p></div>\n";
@@ -438,6 +442,12 @@ function viceversa_display(){
       <div id="icon-tools" class="icon32"><br/></div>
         <h2>Vice Versa</h2>
         <?php _e('Convert Pages To Posts And Vice Versa', 'vice-versa') ?><br />
+        <?php
+	$post_types=get_post_types('','names'); 
+foreach ($post_types as $post_type ) {
+  echo '<p>'. $post_type. '</p>';
+}
+?>
         <div class="viceversa-info hidden">
         <input type="button" class="viceversa-close-info-icon button-secondary" title="<?php _e('Close', 'vice-versa') ?>" value="x" />
             <p><?php _e('Vice Versa is a post-type converter. Follow the steps below to convert items from one post-type to another.', 'vice-versa') ?></p>
