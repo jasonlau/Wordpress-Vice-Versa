@@ -1,0 +1,190 @@
+# Copyright (C) 2010 Vice Versa
+# This file is distributed under the same license as the Vice Versa package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Vice Versa 2.1.6\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/vice-versa\n"
+"POT-Creation-Date: 2011-10-06 18:37:58+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: vice-versa.php:50
+msgid "post"
+msgstr ""
+
+#: vice-versa.php:51
+msgid "posts"
+msgstr ""
+
+#: vice-versa.php:71 vice-versa.php:111 vice-versa.php:623
+msgid "Convert"
+msgstr ""
+
+#: vice-versa.php:91
+msgid "ID"
+msgstr ""
+
+#: vice-versa.php:92
+msgid "Title"
+msgstr ""
+
+#: vice-versa.php:93
+msgid "Date"
+msgstr ""
+
+#: vice-versa.php:94
+msgid "Assign To"
+msgstr ""
+
+#: vice-versa.php:121
+msgid "Debug Mode"
+msgstr ""
+
+#: vice-versa.php:193
+msgid "No items were selected. Please select items using the checkboxes."
+msgstr ""
+
+#: vice-versa.php:203
+msgid "No Parent"
+msgstr ""
+
+#: vice-versa.php:225 vice-versa.php:377
+msgid "Close"
+msgstr ""
+
+#: vice-versa.php:246
+msgid "Invalid post type"
+msgstr ""
+
+#: vice-versa.php:277
+msgid "Select A Category"
+msgstr ""
+
+#: vice-versa.php:284
+msgid "Add another category"
+msgstr ""
+
+#: vice-versa.php:284
+msgid "Remove this category"
+msgstr ""
+
+#: vice-versa.php:290
+msgid "Select A Parent Page"
+msgstr ""
+
+#: vice-versa.php:375
+msgid "Convert Pages To Posts And Vice Versa"
+msgstr ""
+
+#: vice-versa.php:378
+msgid ""
+"Vice Versa is a post-type converter. Follow the steps below to convert items "
+"from one post-type to another."
+msgstr ""
+
+#: vice-versa.php:380
+msgid "Always backup your data before making changes to your website."
+msgstr ""
+
+#: vice-versa.php:381
+msgid ""
+"Select a conversion mode using the <code>Post To Page</code> and <code>Page "
+"To Post</code> buttons. The <input type=\"button\" class=\"button-primary\" "
+"value=\"blue\" /> button is the selected conversion mode."
+msgstr ""
+
+#: vice-versa.php:382
+msgid ""
+"Optional: Select a Parent or Categories to assign your Post or Page to. Use "
+"the bulk Parent or Category selector located at the bottom of the list table "
+"if needed. The Parents and Categories selectors will become visible "
+"depending on which conversion mode is selected."
+msgstr ""
+
+#: vice-versa.php:383
+msgid ""
+"Select Posts or Pages to convert by either using the <code>Convert</code> "
+"link for each item or by using the checkboxes and <code>Bulk Actions</code> "
+"menu."
+msgstr ""
+
+#: vice-versa.php:384
+msgid ""
+"<strong>Important</strong>: Vice Versa does not redirect. The links to the "
+"converted items will change automatically! You will be provided with new "
+"permalinks during the conversion process. Be prepared to change menu links "
+"if you have custom menus or have links hard-coded in your theme."
+msgstr ""
+
+#: vice-versa.php:397
+msgid "Search"
+msgstr ""
+
+#: vice-versa.php:402
+msgid "<strong>Another <em><strong>Quality</strong></em> Work From"
+msgstr ""
+
+#: vice-versa.php:402
+msgid "Vice Versa Version"
+msgstr ""
+
+#: vice-versa.php:410
+msgid "Advertise Here"
+msgstr ""
+
+#: vice-versa.php:472
+msgid "Post To Page"
+msgstr ""
+
+#: vice-versa.php:472
+msgid "Page To Post"
+msgstr ""
+
+#: vice-versa.php:472
+msgid "Items Per Page"
+msgstr ""
+
+#: vice-versa.php:472
+msgid "Go"
+msgstr ""
+
+#: vice-versa.php:511
+msgid "Bulk Category Selector"
+msgstr ""
+
+#: vice-versa.php:511
+msgid "Error: Duplicate Selected!"
+msgstr ""
+
+#: vice-versa.php:520
+msgid "Bulk Parent Selector"
+msgstr ""
+
+#: vice-versa.php:627
+msgid ""
+"Are you sure you want to convert that item? Press OK to continue or Cancel "
+"to return."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Vice Versa"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (Vice Versa 2.1.6)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#. #-#-#-#-#  plugin.pot (Vice Versa 2.1.6)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "http://jasonlau.biz"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Convert Pages to Posts and Vice Versa"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jason Lau"
+msgstr ""

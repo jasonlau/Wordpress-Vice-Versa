@@ -1,0 +1,181 @@
+# Copyright (C) 2012 Vice Versa
+# This file is distributed under the same license as the Vice Versa package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Vice Versa 2.2.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/vice-versa\n"
+"POT-Creation-Date: 2012-07-30 15:16:10+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2012-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: vice-versa-module-page2post.php:31 vice-versa-module-post2page.php:31
+msgid "post"
+msgstr ""
+
+#: vice-versa-module-page2post.php:32 vice-versa-module-post2page.php:32
+msgid "posts"
+msgstr ""
+
+#: vice-versa-module-page2post.php:56 vice-versa-module-page2post.php:98
+#: vice-versa-module-page2post.php:255 vice-versa-module-post2page.php:56
+#: vice-versa-module-post2page.php:98 vice-versa-module-post2page.php:236
+msgid "Convert"
+msgstr ""
+
+#: vice-versa-module-page2post.php:76 vice-versa-module-post2page.php:76
+msgid "ID"
+msgstr ""
+
+#: vice-versa-module-page2post.php:77 vice-versa-module-post2page.php:77
+msgid "Title"
+msgstr ""
+
+#: vice-versa-module-page2post.php:78 vice-versa-module-post2page.php:78
+msgid "Date"
+msgstr ""
+
+#: vice-versa-module-page2post.php:79 vice-versa-module-post2page.php:79
+msgid "Post Type"
+msgstr ""
+
+#: vice-versa-module-page2post.php:80 vice-versa-module-post2page.php:80
+msgid "Assign To"
+msgstr ""
+
+#: vice-versa-module-page2post.php:109 vice-versa-module-post2page.php:109
+msgid "Test Mode"
+msgstr ""
+
+#: vice-versa-module-page2post.php:181 vice-versa-module-page2post.php:260
+#: vice-versa-module-post2page.php:167 vice-versa-module-post2page.php:241
+msgid "Close"
+msgstr ""
+
+#: vice-versa-module-page2post.php:226
+msgid "Select A Category"
+msgstr ""
+
+#: vice-versa-module-page2post.php:233
+msgid "Add another category"
+msgstr ""
+
+#: vice-versa-module-page2post.php:233
+msgid "Remove this category"
+msgstr ""
+
+#: vice-versa-module-page2post.php:255
+msgid "Bulk Category Selector"
+msgstr ""
+
+#: vice-versa-module-page2post.php:255 vice-versa-module-post2page.php:236
+msgid ""
+"Are you sure you want to convert that item? Press OK to continue or Cancel "
+"to return."
+msgstr ""
+
+#: vice-versa-module-page2post.php:255 vice-versa-module-post2page.php:236
+msgid "Error: Duplicate Selected!"
+msgstr ""
+
+#: vice-versa-module-page2post.php:258 vice-versa-module-post2page.php:239
+msgid "Convert Pages To Posts And Vice Versa"
+msgstr ""
+
+#: vice-versa-module-page2post.php:261 vice-versa-module-post2page.php:242
+msgid ""
+"Vice Versa is a post-type converter. Follow the steps below to convert items "
+"from one post-type to another."
+msgstr ""
+
+#: vice-versa-module-page2post.php:263 vice-versa-module-post2page.php:244
+msgid "Always backup your data before making changes to your website."
+msgstr ""
+
+#: vice-versa-module-page2post.php:264 vice-versa-module-post2page.php:245
+msgid ""
+"Select a conversion mode using the <code>Post To Page</code> and <code>Page "
+"To Post</code> buttons. The <input type=\"button\" class=\"button-primary\" "
+"value=\"blue\" /> button is the selected conversion mode."
+msgstr ""
+
+#: vice-versa-module-page2post.php:265 vice-versa-module-post2page.php:246
+msgid ""
+"Optional: Select a Parent or Categories to assign your Post or Page to. Use "
+"the bulk Parent or Category selector located at the bottom of the list table "
+"if needed. The Parents and Categories selectors will become visible "
+"depending on which conversion mode is selected."
+msgstr ""
+
+#: vice-versa-module-page2post.php:266 vice-versa-module-post2page.php:247
+msgid ""
+"Select Posts or Pages to convert by either using the <code>Convert</code> "
+"link for each item or by using the checkboxes and <code>Bulk Actions</code> "
+"menu."
+msgstr ""
+
+#: vice-versa-module-page2post.php:267 vice-versa-module-post2page.php:248
+msgid ""
+"<strong>Important</strong>: Vice Versa does not redirect. The links to the "
+"converted items will change automatically! You will be provided with new "
+"permalinks during the conversion process. Be prepared to change menu links "
+"if you have custom menus or have links hard-coded in your theme."
+msgstr ""
+
+#: vice-versa-module-page2post.php:279 vice-versa-module-post2page.php:260
+msgid "Items Per Page"
+msgstr ""
+
+#: vice-versa-module-page2post.php:279 vice-versa-module-post2page.php:260
+msgid "Go"
+msgstr ""
+
+#: vice-versa-module-page2post.php:288 vice-versa-module-post2page.php:269
+msgid "Search"
+msgstr ""
+
+#: vice-versa-module-page2post.php:309 vice-versa-module-post2page.php:290
+msgid "Vice Versa Version"
+msgstr ""
+
+#: vice-versa-module-page2post.php:309 vice-versa-module-post2page.php:290
+msgid "Version"
+msgstr ""
+
+#: vice-versa-module-post2page.php:123
+msgid "No items were selected. Please select items using the checkboxes."
+msgstr ""
+
+#: vice-versa-module-post2page.php:134
+msgid "No Parent"
+msgstr ""
+
+#: vice-versa-module-post2page.php:207
+msgid "Select A Parent Page"
+msgstr ""
+
+#: vice-versa-module-post2page.php:236
+msgid "Bulk Parent Selector"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Vice Versa"
+msgstr ""
+
+#. #-#-#-#-#  plugin.pot (Vice Versa 2.2.2)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#. #-#-#-#-#  plugin.pot (Vice Versa 2.2.2)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "http://jasonlau.biz"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Convert Pages to Posts and Vice Versa"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jason Lau"
+msgstr ""

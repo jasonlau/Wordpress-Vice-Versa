@@ -1,0 +1,164 @@
+<!--
+    
+    #viceversa-left-panel{
+        position: relative;
+        margin: 0px;
+        border: 0px solid red;
+    }
+    
+    .viceversa-module-buttons{
+        display: block;
+        margin: 20px 150px 20px 0px;
+    }
+    
+	.viceversa-error-field{
+	   border: 1px solid red;
+       background-color: #FFFF99;
+	}
+    
+    #viceversa-assign-error{
+        color:red;
+        font-weight: bold;
+        font-variant: small-caps;
+    }
+    
+    .viceversa-close-icon, .viceversa-close-info-icon{
+        float: right;
+        margin: 5px 0px;
+    }
+    
+    .viceversa-info{
+        background: #ECECEC;
+        border: 1px solid #CCC;
+        padding: 0 10px;
+        margin: 5px 0px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+    }
+    
+    .viceversa-hidden{
+        display: none;
+    }
+    
+    #viceversa-left-panel{
+        z-index: 1;
+        width:100%;
+    }
+    
+    #viceversa-form, #viceversa-list-table-form{
+        position: relative;
+        margin: 0px !important;
+    }
+    
+    #viceversa-form{
+        z-index: 2;
+    }
+    
+    #viceversa-list-table-form{
+        z-index: 1;
+    }
+    
+    .wp-list-table{
+        width:100%;
+     }
+     
+     .viceversa-assign-to{
+        width:300px;
+        min-width: 300px !important;
+     }
+     
+     .column-assign_to{
+        width:300px;
+        min-width: 300px !important;
+     }
+     
+     .column-ID{
+        width:100px;
+        min-width: 100px !important;
+     }
+     
+     .column-post_title{
+        width:350px;
+        min-width: 350px !important;
+     }
+     
+     .column-post_date{
+        width:150px;
+        min-width: 150px !important;
+     }
+     
+     .wrap h3{
+       margin: 20px 0px 20px 0px !important; 
+     }
+     
+     div.actions{
+       margin: -10px 0px 0px 0px !important; 
+     }
+     
+     div#viceversa-search{
+       float: right;
+     }
+     
+     label{
+        font-weight: bold;
+    }
+    
+    .debug-on{
+        font-weight: bold;
+        color: green;
+    }
+    
+    .debug-off{
+        font-weight: bold;
+        color: red;
+    }
+    
+    .debug-on-top{
+        margin: 20px 0px 10px 0px !important;
+        padding: 10px;
+        background-color: lightYellow;
+        border: 1px solid #E6DB55;
+    }
+    
+    .viceversa-debug-container{
+        margin: 10px 0px 0px 0px !important;
+    }
+    
+    .viceversa-credits{
+        margin: 15px 0px 0px 0px !important;
+    }
+    
+    .viceversa-update{
+        position: relative;        
+        border: 1px solid #CECE00;
+        background-color: #FFFF99;
+        padding:4px;
+        margin:0px;
+        -moz-border-radius:3px;
+        -khtml-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+     }
+     
+     .viceversa-update p{
+        margin:.5em 0;
+        padding:2px;
+     }
+          
+     #viceversa-remote-plug p{
+        text-align: left;
+     }
+     
+     .module-update{
+        display: block;
+        margin: 0px 0px 10px 0px !important;
+     }       
+    
+     .viceversa-updater-dismiss{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+     }     
+    
+    -->
